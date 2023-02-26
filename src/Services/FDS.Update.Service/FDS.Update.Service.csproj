@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>dotnet-FDS.Version.Service-A239C240-920B-42FC-AF1D-787D099743E4</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'FDS.Version.Service' ">
+    <ExternalConsole>true</ExternalConsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Consumers\hjgdochd.mdv~" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.0.12" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.12" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FDS.Common\FDS.Common.csproj" />
+    <ProjectReference Include="..\FDS.Update.Repository\FDS.Update.Repository.csproj" />
+    <ProjectReference Include="..\FDS.Update.Domain\FDS.Update.Domain.csproj" />
+  </ItemGroup>
+</Project>

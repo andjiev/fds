@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FDS.Common\FDS.Common.csproj" />
+    <ProjectReference Include="..\FDS.Update.Domain\FDS.Update.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Dapper" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+  </ItemGroup>
+</Project>
