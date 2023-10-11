@@ -5,13 +5,13 @@ import { AppDispatch } from 'index';
 import ApplicationState from 'store/application-store';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button } from '@material-ui/core';
-import * as PackageListStore from 'store/package-list-store';
+import * as PackageListStore from 'store/package-update-store';
 import { translate } from 'lib/translate';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
-import { StyledTableHead } from './package-list.styles';
+import { StyledTableHead } from './package-update.styles';
 import { Status } from 'lib/enums';
 
-interface IPackageListProps {
+interface IPackageUpdateProps {
   packages: Models.Package.Model[];
 
   onPageInit: () => void;
@@ -20,7 +20,7 @@ interface IPackageListProps {
   onResetPackages: () => void;
 }
 
-const PackageListPage = (props: IPackageListProps) => {
+const PackageUpdatePage = (props: IPackageUpdateProps) => {
   useEffect(() => {
     props.onPageInit();
   }, []);
@@ -84,6 +84,6 @@ const mapStateToProps = (state: ApplicationState) => {
   };
 };
 
-const _PackageListPage = connect(() => mapStateToProps, mapDisptachToProps)(PackageListPage);
+const _PackageUpdatePage = connect(() => mapStateToProps, mapDisptachToProps)(PackageUpdatePage);
 
-export default _PackageListPage;
+export default _PackageUpdatePage;

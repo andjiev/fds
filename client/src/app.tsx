@@ -22,7 +22,8 @@ const _App: React.FC<IApp> = (props: IApp) => {
 
   const Menu = lazy(() => import('components/menu'));
   const Navigation = lazy(() => import('components/navigation'));
-  const PackageListPage = lazy(() => import('pages/package-list'));
+  const PackageUpdatePage = lazy(() => import('pages/package-update'));
+  const PackageVersionsPage = lazy(() => import('pages/package-versions'));
 
   const renderLoader = () => {
     return (
@@ -47,7 +48,8 @@ const _App: React.FC<IApp> = (props: IApp) => {
                     <Menu />
                     <Box m={3}>
                       <Switch>
-                        <Route exact path={ROUTES.PACKAGE_LIST} component={PackageListPage} />
+                        <Route exact path={ROUTES.PACKAGE_UPDATE} component={PackageUpdatePage} />
+                        <Route exact path={ROUTES.PACKAGE_VERSION} component={PackageVersionsPage} />
                       </Switch>
                     </Box>
                   </Box>

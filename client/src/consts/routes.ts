@@ -1,5 +1,6 @@
 const ROUTES = {
-  PACKAGE_LIST: '/'
+  PACKAGE_UPDATE: '/',
+  PACKAGE_VERSION: '/package-versions'
 };
 
 export { ROUTES };

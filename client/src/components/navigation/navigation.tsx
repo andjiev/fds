@@ -10,6 +10,7 @@ import ApplicationState from 'store/application-store';
 
 import { ROUTES } from 'consts';
 import AllInboxIcon from '@material-ui/icons/AllInbox';
+import UpdateIcon from '@material-ui/icons/Update';
 import { translate } from 'lib/translate';
 
 interface INavigationProps {
@@ -27,11 +28,17 @@ const Navigation = (props: INavigationProps) => {
         </Grid>
       </Box>
       <List component="nav">
-        <ListItem button alignItems="center" onClick={() => props.navigateTo(ROUTES.PACKAGE_LIST)}>
+        <ListItem button alignItems="center" onClick={() => props.navigateTo(ROUTES.PACKAGE_UPDATE)}>
+          <WhiteIcons>
+            <UpdateIcon />
+          </WhiteIcons>
+          <ListItemText primary={translate('Page_Title_Packages', 'Packages')} />
+        </ListItem>
+        <ListItem button alignItems="center" onClick={() => props.navigateTo(ROUTES.PACKAGE_VERSION)}>
           <WhiteIcons>
             <AllInboxIcon />
           </WhiteIcons>
-          <ListItemText primary={translate('Page_Title_Packages', 'Packages')} />
+          <ListItemText primary={translate('Page_Title_Versions', 'Versions')} />
         </ListItem>
       </List>
     </StyledNavigationWrapper>

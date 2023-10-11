@@ -6,11 +6,11 @@ import * as PackageService from 'services/package-service';
 import { translate } from 'lib/translate';
 import { createConnection } from 'lib/signalr';
 
-export interface PackageListStore {
+export interface PackageUpdateStore {
   packages: Models.Package.Model[];
 }
 
-export const initialState: PackageListStore = {
+export const initialState: PackageUpdateStore = {
   packages: []
 };
 
@@ -18,7 +18,7 @@ const slice = createSlice({
   name: 'packageList',
   initialState,
   reducers: {
-    setPackages: (state: PackageListStore, action: PayloadAction<Models.Package.Model[]>) => {
+    setPackages: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model[]>) => {
       state.packages = action.payload;
     }
   }

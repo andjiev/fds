@@ -7,9 +7,6 @@
     <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'FDS.Version.Service' ">
-    <ExternalConsole>true</ExternalConsole>
-  </PropertyGroup>
   <ItemGroup>
     <None Remove="Consumers\hjgdochd.mdv~" />
   </ItemGroup>
@@ -27,5 +24,12 @@
     <ProjectReference Include="..\..\Core\FDS.Common\FDS.Common.csproj" />
     <ProjectReference Include="..\FDS.Update.Repository\FDS.Update.Repository.csproj" />
     <ProjectReference Include="..\FDS.Update.Domain\FDS.Update.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Properties\launchSettings.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

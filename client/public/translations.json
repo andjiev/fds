@@ -1,8 +1,8 @@
 {
   "mk-MK": {
     "translation": {
-      "Page_Title_Packages": "Пакети",
-      "FDS_Package_Include_Prelease": "Бета верзии",
+      "Page_Title_Packages": "Update",
+      "Page_Title_Versions": "Versions",
       "FDS_Package_Bluetooth": "Bluetooth",
       "FDS_Package_Noise_Cancelling": "Noise Cancelling",
       "FDS_Package_Stereo": "Stereo"
@@ -10,8 +10,8 @@
   },
   "en-GB": {
     "translation": {
-      "Page_Title_Packages": "Packages",
-      "FDS_Package_Include_Prelease": "Include prelease",
+      "Page_Title_Packages": "Update",
+      "Page_Title_Versions": "Versions",
       "FDS_Package_Bluetooth": "Bluetooth",
       "FDS_Package_Noise_Cancelling": "Noise Cancelling",
       "FDS_Package_Stereo": "Stereo"
