@@ -1,82 +1,49 @@
-import React, { useEffect, lazy, Suspense } from 'react';
-import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router';
-import { AppDispatch } from 'index';
-import ApplicationState from 'store/application-store';
-import { bootstrapApp } from 'store/shared-store';
+import { Suspense, lazy, useEffect } from 'react';
 
-import { ROUTES } from './consts';
-import { Box, Grid } from '@material-ui/core';
-import LoadingScreen from 'react-loading-screen';
+import Router from './router';
+import { Box, Grid } from '@mui/material';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { bootstrapApp } from './store/shared-store';
+import Loading from './components/Loading';
 
-interface IApp {
-  applicationBootstraped: boolean;
+const Menu = lazy(() => import('./components/Menu'));
+const Navigation = lazy(() => import('./components/Navigation'));
 
-  bootstrapApp: () => void;
-}
+const App = () => {
+  const dispatch = useAppDispatch();
+  const applicationBootstraped = useAppSelector(state => !state.ui.showInitialLoader);
 
-const _App: React.FC<IApp> = (props: IApp) => {
   useEffect(() => {
-    props.bootstrapApp();
+    dispatch(bootstrapApp());
   }, []);
 
-  const Menu = lazy(() => import('components/menu'));
-  const Navigation = lazy(() => import('components/navigation'));
-  const PackageUpdatePage = lazy(() => import('pages/package-update'));
-  const PackageVersionsPage = lazy(() => import('pages/package-versions'));
-
-  const renderLoader = () => {
-    return (
-      <LoadingScreen loading bgColor="#333333" spinnerColor="#ffffff">
-        <Box component="span"></Box>
-      </LoadingScreen>
-    );
-  };
+  const renderLoader = () => <Loading />;
 
   return (
     <>
-      {props.applicationBootstraped ? (
-        <>
-          <Suspense fallback={renderLoader()}>
-            <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
-              <Grid container>
-                <Grid item xs={12} md={4} lg={3} xl={2}>
-                  <Navigation />
-                </Grid>
-                <Grid item xs={12} md={8} lg={9} xl={10}>
-                  <Box>
-                    <Menu />
-                    <Box m={3}>
-                      <Switch>
-                        <Route exact path={ROUTES.PACKAGE_UPDATE} component={PackageUpdatePage} />
-                        <Route exact path={ROUTES.PACKAGE_VERSION} component={PackageVersionsPage} />
-                      </Switch>
-                    </Box>
-                  </Box>
-                </Grid>
+      {applicationBootstraped ? (
+        <Suspense fallback={renderLoader()}>
+          <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
+            <Grid container>
+              <Grid item xs={12} md={4} lg={3} xl={2}>
+                <Navigation />
               </Grid>
-            </Box>
-          </Suspense>
-        </>
+              <Grid item xs={12} md={8} lg={9} xl={10}>
+                <Box>
+                  <Menu />
+                  <Box m={3}>
+                    <Router />
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Suspense>
       ) : (
-          renderLoader()
-        )}
+        renderLoader()
+      )}
     </>
   );
 };
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  bootstrapApp: () => {
-    dispatch(bootstrapApp());
-  }
-});
-
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    applicationBootstraped: !state.ui.showInitialLoader
-  };
-};
-
-const App = connect(() => mapStateToProps, mapDispatchToProps)(_App);
 
 export default App;

@@ -1,4 +1,4 @@
-import { EN_CULTURE } from 'consts';
+import { EN_CULTURE } from '../../consts';
 
 const key = 'culture';
 const defaultCulture = EN_CULTURE;

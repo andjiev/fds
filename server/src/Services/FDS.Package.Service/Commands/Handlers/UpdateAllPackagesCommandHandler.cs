@@ -38,18 +38,13 @@
                 if(package.Status == PackageStatus.Initial)
                 {
                     package.UpdateStatus(PackageStatus.Updating);
-
                     await repository.UpdatePackageAsync(package);
                     await StartPackageUpdate(package.Id, package.VersionUpdate.Id, cancellationToken);
-                    var test = mapper.Map<Models.Package>(package, opt =>
-                    {
-                        opt.AfterMap((src, dest) => dest.VersionUpdate = null);
-                    });
-                    packagesToReturn.Add(mapper.Map<Models.Package>(package, opt =>
-                    {
-                        opt.AfterMap((src, dest) => dest.VersionUpdate = null);
-                    }));
                 }
+                packagesToReturn.Add(mapper.Map<Models.Package>(package, opt =>
+                {
+                    opt.AfterMap((src, dest) => dest.VersionUpdate = null);
+                }));
             }
 
             return packagesToReturn;

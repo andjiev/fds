@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk } from './app-thunk';
 
-import * as SharedStore from 'store/shared-store';
-import * as PackageService from 'services/package-service';
-import { translate } from 'lib/translate';
-import { createConnection } from 'lib/signalr';
+import * as SharedStore from './shared-store';
+import * as PackageService from '../services/package-service';
+import { translate } from '@/lib/translate';
+import { AppThunk } from '.';
+import { createConnection } from '@/lib/signalr';
 
 export interface PackageUpdateStore {
   packages: Models.Package.Model[];
@@ -91,3 +91,5 @@ const setupSignalRConnection = (): AppThunk => async (dispatch, store) => {
     console.log(err);
   }
 };
+
+export default slice;

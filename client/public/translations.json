@@ -1,20 +1,20 @@
 {
-  "mk-MK": {
-    "translation": {
-      "Page_Title_Packages": "Update",
-      "Page_Title_Versions": "Versions",
-      "FDS_Package_Bluetooth": "Bluetooth",
-      "FDS_Package_Noise_Cancelling": "Noise Cancelling",
-      "FDS_Package_Stereo": "Stereo"
-    }
-  },
-  "en-GB": {
-    "translation": {
-      "Page_Title_Packages": "Update",
-      "Page_Title_Versions": "Versions",
-      "FDS_Package_Bluetooth": "Bluetooth",
-      "FDS_Package_Noise_Cancelling": "Noise Cancelling",
-      "FDS_Package_Stereo": "Stereo"
+    "mk-MK": {
+      "translation": {
+        "Page_Title_Packages": "Update",
+        "Page_Title_Versions": "Versions",
+        "FDS_Package_Bluetooth": "Bluetooth",
+        "FDS_Package_Noise_Cancelling": "Noise Cancelling",
+        "FDS_Package_Stereo": "Stereo"
+      }
+    },
+    "en-GB": {
+      "translation": {
+        "Page_Title_Packages": "Update",
+        "Page_Title_Versions": "Versions",
+        "FDS_Package_Bluetooth": "Bluetooth",
+        "FDS_Package_Noise_Cancelling": "Noise Cancelling",
+        "FDS_Package_Stereo": "Stereo"
+      }
     }
   }
-}

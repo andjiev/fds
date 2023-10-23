@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppThunk } from './app-thunk';
 
 import * as UiStore from './ui-store';
-import { getTranslations } from 'services/translation-service';
-import { initTranslations } from 'lib/translate';
 import { getCultureFromStorage, setCultureToStorage } from './helpers/language-helper';
+import { initTranslations } from '../lib/translate';
+import { AppThunk } from '.';
+import { getTranslations } from '@/services/translation-service';
 
 export interface SharedStore {
   title: string;
@@ -54,5 +54,7 @@ export const changeCulture = (culture: string): AppThunk => async (dispatch, sto
   setCultureToStorage(culture);
 
   // refresh
-  window.location.reload(false);
+  window.location.reload();
 };
+
+export default slice;

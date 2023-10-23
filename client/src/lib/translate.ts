@@ -1,6 +1,6 @@
+import { CURRENT_ENVIRONMENT } from '@/consts';
 import i18next from 'i18next';
-import { CURRENT_ENVIRONMENT } from 'consts';
-import { Environment } from 'lib/enums';
+import { Environment } from './enums';
 
 const initTranslations = (translations: Translations, culture: string) => {
   i18next.init({

@@ -1,4 +1,4 @@
-import { MK_CULTURE, EN_CULTURE } from 'consts';
+import { EN_CULTURE, MK_CULTURE } from "../../consts";
 
 const formatCulture = (culture: string) => {
   return culture == MK_CULTURE ? 'MK' : 'EN';

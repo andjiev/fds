@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-axios.defaults.baseURL = API_URL;
+axios.defaults.baseURL = 'https://localhost:5001/';
 
 axios.interceptors.response.use(
   (response: AxiosResponse) => {

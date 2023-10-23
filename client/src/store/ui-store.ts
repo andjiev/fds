@@ -24,3 +24,5 @@ const slice = createSlice({
 export const { showInitialLoader, hideInitialLoader } = slice.actions;
 
 export const reducer = slice.reducer;
+
+export default slice;

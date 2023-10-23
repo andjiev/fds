@@ -1,24 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-import { AppDispatch } from 'index';
-import ApplicationState from 'store/application-store';
+import { changeCulture } from '../../store/shared-store';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-import * as SharedStore from 'store/shared-store';
-
-import { StyledBox } from './menu.styles';
-import { Grid, Box, Typography, FormControl, Select, MenuItem } from '@material-ui/core';
+import { Box, FormControl, Grid, MenuItem, Select, Typography } from '@mui/material';
 import { formatCulture, formatLanguage } from './menu.utils';
+import { StyledBox } from './menu.styles';
 
-interface IMenuProps {
-  title: string;
-  language: string;
-
-  onLanguageChange: (lang: string) => void;
-}
-
-const Menu = (props: IMenuProps) => {
+const Menu = () => {
+  const dispatch = useAppDispatch();
+  const title = useAppSelector(state => state.shared.title);
+  const language = useAppSelector(state => formatCulture(state.shared.culture));
   const languages = ['EN', 'MK'];
+
+  const onLanguageChange = (lang: string) => {
+    dispatch(changeCulture(formatLanguage(lang)));
+  };
 
   return (
     <>
@@ -26,14 +23,14 @@ const Menu = (props: IMenuProps) => {
         <Box p={3}>
           <Grid container>
             <Grid item xs={8}>
-              <Typography variant="h5">{props.title}</Typography>
+              <Typography variant="h5">{title}</Typography>
             </Grid>
-            <Grid container item xs={4} justify="flex-end">
+            <Grid container item xs={4} justifyContent="flex-end">
               <Grid item xs={12} md={2}>
                 <FormControl fullWidth>
                   <Select
-                    value={props.language}
-                    onChange={(event: React.ChangeEvent<{ value: unknown }>) => props.onLanguageChange(event.target.value as string)}
+                    value={language}
+                    onChange={(event: any) => onLanguageChange(event.target.value as string)}
                   >
                     {languages.map(lang => {
                       return <MenuItem key={lang} value={lang}>{lang}</MenuItem>;
@@ -49,19 +46,4 @@ const Menu = (props: IMenuProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  onLanguageChange: (lang: string) => {
-    dispatch(SharedStore.changeCulture(formatLanguage(lang)));
-  }
-});
-
-const mapStateToProps = (state: ApplicationState) => {
-  return {
-    title: state.shared.title,
-    language: formatCulture(state.shared.culture)
-  };
-};
-
-const MenuContainer = connect(mapStateToProps, mapDispatchToProps)(Menu);
-
-export default MenuContainer;
+export default Menu;
