@@ -45,7 +45,7 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "StartUpdate"), e =>
                     {
                         e.Consumer<StartUpdateConsumer>(context);
-                        e.PrefetchCount = 3;
+                        e.PrefetchCount = 1;
                     });
                 });
             });

@@ -17,6 +17,7 @@ interface IPackageUpdateProps {
   onPageInit: () => void;
   onGetPackages: () => void;
   onUpdatePackage: (packageId: number, versionId: number) => void;
+  onUpdateAllPackages: () => void;
   onResetPackages: () => void;
 }
 
@@ -42,19 +43,40 @@ const PackageUpdatePage = (props: IPackageUpdateProps) => {
                 </StyledTableHead>
                 <TableBody>
                   {props.packages.map(item => {
-                    return <TableRow key={item.id}>
-                      <TableCell>{translate(item.name)}</TableCell>
-                      <TableCell>{item.version.name}</TableCell>
-                      <TableCell>{item.versionUpdate ? `${item.versionUpdate.name} is available` : item.status === Status.Updated ? 'Package is up to date' : 'Updating...'}</TableCell>
-                      <TableCell align="center">{item.versionUpdate ? <IconButton size="small" onClick={() => props.onUpdatePackage(item.id, item.versionUpdate.id)}><SystemUpdateAltIcon /></IconButton> : item.status === Status.Updated ? '' : <CircularProgress size="20px" />}</TableCell>
-                    </TableRow>
+                    return (
+                      <TableRow key={item.id}>
+                        <TableCell>{translate(item.name)}</TableCell>
+                        <TableCell>{item.version.name}</TableCell>
+                        <TableCell>{item.versionUpdate ? `${item.versionUpdate.name} is available` : item.status === Status.Updated ? 'Package is up to date' : 'Updating...'}</TableCell>
+                        <TableCell align="center">
+                          {item.versionUpdate ? (
+                            <IconButton size="small" onClick={() => props.onUpdatePackage(item.id, item.versionUpdate.id)}>
+                              <SystemUpdateAltIcon />
+                            </IconButton>
+                          ) : item.status === Status.Updated ? (
+                            ''
+                          ) : (
+                            <CircularProgress size="20px" />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
                   })}
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
           <Grid item xs={6}>
-            <Button variant="contained" color="primary" onClick={props.onResetPackages}>Reset packages</Button>
+            <Box>
+              <Button variant="contained" color="primary" onClick={props.onUpdateAllPackages}>
+                Update all packages
+              </Button>
+            </Box>
+            <Box mt={3}>
+              <Button variant="contained" color="secondary" onClick={props.onResetPackages}>
+                Reset packages
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -71,7 +93,10 @@ const mapDisptachToProps = (dispatch: AppDispatch) => ({
     dispatch(PackageListStore.onGetPackages());
   },
   onUpdatePackage: (packageId: number, versionId: number) => {
-    dispatch(PackageListStore.onUpdatePackageVersion(packageId, versionId));
+    dispatch(PackageListStore.onUpdatePackage(packageId, versionId));
+  },
+  onUpdateAllPackages: () => {
+    dispatch(PackageListStore.onUpdateAllPackages());
   },
   onResetPackages: () => {
     dispatch(PackageListStore.onResetPackages());

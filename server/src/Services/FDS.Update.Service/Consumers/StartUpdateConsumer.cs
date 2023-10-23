@@ -20,8 +20,8 @@
         {
             try
             {
-                // wait for 3-10s to simulate package update.
-                Thread.Sleep(new Random().Next(3, 11) * 1000);
+                // wait for 10-15s to simulate package update.
+                Thread.Sleep(new Random().Next(3, 7) * 1000);
 
                 await repository.UpdatePackageVersionAsync(context.Message.PackageId, context.Message.VersionId);
 

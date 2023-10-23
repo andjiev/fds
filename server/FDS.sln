@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDS.Api", "src\FDS.Api\FDS.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E0AC07A4-86B1-4A7E-8487-DDB89B9694C6}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{80A6F99B-B661-4E9A-AC09-53E333DAC4F3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2100071D-A82B-4768-8EBC-4C180BDA4C98}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDS.Package.Service", "src\Services\FDS.Package.Service\FDS.Package.Service.csproj", "{B96B6822-2056-44F2-A8E3-4FCA37FB96FA}"

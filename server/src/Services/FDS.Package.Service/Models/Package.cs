@@ -14,4 +14,9 @@
 
         public PackageStatus Status { get; set; }
     }
+
+    public class UpdatePackage
+    {
+        public int VersionId { get; set; }
+    }
 }

@@ -45,12 +45,23 @@ export const onGetPackages = (): AppThunk => async (dispatch, store) => {
   }
 };
 
-export const onUpdatePackageVersion = (packageId: number, versionId: number): AppThunk => async (dispatch, store) => {
+export const onUpdatePackage = (packageId: number, versionId: number): AppThunk => async (dispatch, store) => {
   try {
-    const result = await PackageService.updatePackageVersion(packageId, versionId);
+    const result = await PackageService.updatePackage(packageId, versionId);
     if (result.data) {
       const packages = store().packageList.packages;
-      dispatch(setPackages(packages.map(x => x.id === packageId ? result.data : x)));
+      dispatch(setPackages(packages.map(x => (x.id === packageId ? result.data : x))));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const onUpdateAllPackages = (): AppThunk => async (dispatch, store) => {
+  try {
+    const result = await PackageService.updateAllPackages();
+    if (result.data) {
+      dispatch(setPackages(result.data));
     }
   } catch (err) {
     console.log(err);
@@ -66,7 +77,7 @@ export const onResetPackages = (): AppThunk => async (dispatch, store) => {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 const setupSignalRConnection = (): AppThunk => async (dispatch, store) => {
   const connection = createConnection('hubs/package');
@@ -74,7 +85,7 @@ const setupSignalRConnection = (): AppThunk => async (dispatch, store) => {
     await connection.start();
     connection.on('packageUpdated', (result: Models.Package.Model) => {
       const packages = store().packageList.packages;
-      dispatch(setPackages(packages.map(x => x.id === result.id ? result : x)));
+      dispatch(setPackages(packages.map(x => (x.id === result.id ? result : x))));
     });
   } catch (err) {
     console.log(err);

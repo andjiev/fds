@@ -26,14 +26,21 @@
             return Ok(packages);
         }
 
-        [HttpPatch("{packageId:int}/version/{versionId:int}")]
-        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId, int versionId)
+        [HttpPut("{packageId:int}")]
+        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId, [FromBody]Models.UpdatePackage model)
         {
-            var package = await mediator.Send(new UpdatePackageVersionCommand(packageId, versionId));
+            var package = await mediator.Send(new UpdatePackageVersionCommand(packageId, model.VersionId));
             return Ok(package);
         }
 
-        [HttpPatch("reset")]
+        [HttpPut("updateAll")]
+        public async Task<ActionResult<List<Models.Package>>> UpdateAllPackages()
+        {
+            var packages = await mediator.Send(new UpdateAllPackagesCommand());
+            return Ok(packages);
+        }
+
+        [HttpPut("reset")]
         public async Task<ActionResult<List<Models.Package>>> UpdatePackagesToInitialState()
         {
             var packages = await mediator.Send(new UpdatePackagesToInitialStateCommand());
