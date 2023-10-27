@@ -21,7 +21,7 @@ const Menu = () => {
     <>
       <StyledBox boxShadow={3}>
         <Box p={3}>
-          <Grid container>
+          <Grid container alignItems="center">
             <Grid item xs={8}>
               <Typography variant="h5">{title}</Typography>
             </Grid>
@@ -31,6 +31,7 @@ const Menu = () => {
                   <Select
                     value={language}
                     onChange={(event: any) => onLanguageChange(event.target.value as string)}
+                    style={{ height: 45 }}
                   >
                     {languages.map(lang => {
                       return <MenuItem key={lang} value={lang}>{lang}</MenuItem>;

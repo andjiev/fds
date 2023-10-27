@@ -27,7 +27,7 @@ const Navigation = () => {
             />
           </ListItem>
         </NavLink>
-        <NavLink to="/version">
+        <NavLink to="/versions">
           <ListItem alignItems="center">
             <WhiteIcons>
               <AllInboxIcon htmlColor="#fff" />

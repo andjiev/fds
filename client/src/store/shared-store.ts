@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import * as UiStore from './ui-store';
+import * as PackageStore from './package-store';
 import { getCultureFromStorage, setCultureToStorage } from './helpers/language-helper';
 import { initTranslations } from '../lib/translate';
 import { AppThunk } from '.';
 import { getTranslations } from '@/services/translation-service';
+import { createConnection } from '@/lib/signalr';
 
 export interface SharedStore {
   title: string;
@@ -55,6 +57,19 @@ export const changeCulture = (culture: string): AppThunk => async (dispatch, sto
 
   // refresh
   window.location.reload();
+};
+
+export const setupSignalRConnection = (): AppThunk => async (dispatch, store) => {
+  const connection = createConnection('hubs/package');
+  try {
+    await connection.start();
+    connection.on('packageUpdated', (result: Models.Package.Model) => {
+      const packages = store().packageList.packages;
+      dispatch(PackageStore.setPackages(packages.map(x => (x.id === result.id ? result : x))));
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default slice;

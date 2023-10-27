@@ -5,6 +5,7 @@ import { Box, Grid } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { bootstrapApp } from './store/shared-store';
 import Loading from './components/Loading';
+import { onGetPackages } from './store/package-store';
 
 const Menu = lazy(() => import('./components/Menu'));
 const Navigation = lazy(() => import('./components/Navigation'));
@@ -15,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(bootstrapApp());
+    dispatch(onGetPackages());
   }, []);
 
   const renderLoader = () => <Loading />;

@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button } from '@mui/material';
-import { onGetPackages, onInit, onUpdateAllPackages, onUpdatePackage, onResetPackages } from '@/store/package-update-store';
+import { onUpdateAllPackages, onUpdatePackage, onResetPackages } from '@/store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { translate } from '@/lib/translate';
 import { Status } from '@/lib/enums';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import { setTitle } from '@/store/shared-store';
 
 const PackageUpdateView = () => {
   const dispatch = useAppDispatch();
   const packages = useAppSelector(state => state.packageList.packages);
 
   useEffect(() => {
-    dispatch(onInit());
-    dispatch(onGetPackages());
+    dispatch(setTitle(translate('Page_Title_Packages', 'Packages')));
   }, []);
 
   const onUpdate = (packageId: number, versionId: number) => {
@@ -47,10 +47,10 @@ const PackageUpdateView = () => {
                 <TableBody>
                   {packages.map(item => {
                     return (
-                      <TableRow key={item.id}>
+                      <TableRow key={item.id} style={{ height: 70 }}>
                         <TableCell>{translate(item.name)}</TableCell>
-                        <TableCell>{item.version.name}</TableCell>
-                        <TableCell>{item.versionUpdate ? `${item.versionUpdate.name} is available` : item.status === Status.Updated ? 'Package is up to date' : 'Updating...'}</TableCell>
+                        <TableCell>v.{item.version.name}</TableCell>
+                        <TableCell>{item.versionUpdate ? `v.${item.versionUpdate.name} is available` : item.status === Status.Updated ? 'Up to date' : 'Updating...'}</TableCell>
                         <TableCell align="center">
                           {item.versionUpdate ? (
                             <IconButton size="small" onClick={() => onUpdate(item.id, item.versionUpdate.id)}>

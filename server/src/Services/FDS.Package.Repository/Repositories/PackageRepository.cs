@@ -65,7 +65,7 @@
             return mapper.Map<List<Package>>(result);
         }
 
-        public async Task<Package> GetPackageAsync(int packageId, bool includeVersionUpdate = true)
+        public async Task<Package> GetPackageAsync(int packageId, bool includeVersionUpdate = true, bool latestVersionUpdate = false)
         {
             string query = @"
                         SELECT
@@ -80,13 +80,23 @@
                             ON Package.VersionId = Version.Id
                         WHERE Package.Id = @Id";
 
-            string versionUpdateQuery = @"
+            string nextVersionUpdateQuery = @"
                                 SELECT TOP 1
                                     Version.Id as Id,
 									Version.Name as Name
                                 FROM Version
 								WHERE Version.Id != @VersionId AND Version.CreatedOn > @VersionCreatedOn AND Version.PackageId = @PackageId
 								GROUP BY Version.Id, Version.Name";
+
+            string latestVersionUpdateQuery = @"
+                                SELECT TOP 1
+                                    Version.Id as Id,
+                                    Version.Name as Name
+                                FROM Version
+                                WHERE Version.PackageId = @PackageId
+                                ORDER BY CreatedOn desc";
+
+            string versionUpdateQuery = latestVersionUpdate ? latestVersionUpdateQuery : nextVersionUpdateQuery;
 
             var package = await dbConnection.QueryFirstOrDefaultAsync<PackageDbResult>(query, new
             {

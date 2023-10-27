@@ -6,4 +6,11 @@
 
         public string Name { get; set; }
     }
+
+    public class CreateVersion
+    {
+        public int PackageId { get; set; }
+
+        public string VersionNumber { get; set; }
+    }
 }

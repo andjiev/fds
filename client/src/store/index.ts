@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 
 import uiSlice from './ui-store';
 import sharedSlice from './shared-store';
-import packageList from './package-update-store';
+import packageList from './package-store';
 
 export const store = configureStore({
   reducer: {

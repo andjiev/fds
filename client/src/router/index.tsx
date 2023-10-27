@@ -1,17 +1,25 @@
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import withLazyLoad from '../lib/withLazyLoad';
+import { useAppDispatch } from '@/hooks';
+import { setupSignalRConnection } from '@/store/shared-store';
 
-const PackageUpdatePage = lazy(() => import('../components/PackageUpdateView'));
-const PackageVersionsPage = lazy(() => import('../components/PackageVersionView'));
+const PackageUpdateView = lazy(() => import('../components/PackageUpdateView'));
+const PackageVersionsView = lazy(() => import('../components/PackageVersionView'));
 
 const Router = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setupSignalRConnection());
+  }, []);
+
   return (
-      <Routes>
-        <Route index Component={withLazyLoad(PackageUpdatePage)} />
-        <Route index path="version" Component={withLazyLoad(PackageVersionsPage)} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+    <Routes>
+      <Route index Component={withLazyLoad(PackageUpdateView)} />
+      <Route index path="versions" Component={withLazyLoad(PackageVersionsView)} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 };
 
