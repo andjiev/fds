@@ -1,0 +1,10 @@
+﻿{
+  "private": true,
+  "scripts": {
+    "build": "echo ------ Yarn Install ------ && yarn install && echo ------ Webpack Compile ------ && webpack"
+  },
+  "dependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}

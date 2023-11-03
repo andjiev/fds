@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <None Remove="Consumers\hjgdochd.mdv~" />
+    <None Remove="Jering.Javascript.NodeJS" />
+    <None Remove="Javascript\" />
+    <None Remove="Yarn" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +21,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="Jering.Javascript.NodeJS" Version="7.0.0" />
+    <PackageReference Include="Yarn" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,5 +36,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Javascript\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Javascript\webpack.config.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 </Project>
