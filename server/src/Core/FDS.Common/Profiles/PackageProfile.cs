@@ -1,8 +1,9 @@
-﻿namespace FDS.Package.Service.Profiles
+﻿namespace FDS.Common.Profiles
 {
     using AutoMapper;
     using FDS.Common.Interfaces;
-    using Entities = Domain.Entities;
+    using Entities = FDS.Common.Entities;
+    using Models = FDS.Common.Models;
 
     public class PackageProfile : Profile, IProfile
     {

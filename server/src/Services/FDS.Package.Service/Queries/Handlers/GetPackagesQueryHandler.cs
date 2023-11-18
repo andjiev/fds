@@ -2,13 +2,13 @@
 {
     using AutoMapper;
     using FDS.Package.Domain.Repositories;
-    using FDS.Package.Service.Models;
     using MediatR;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Models = FDS.Common.Models;
 
-    public class GetPackagesQueryHandler : IRequestHandler<GetPackagesQuery, List<Package>>
+    public class GetPackagesQueryHandler : IRequestHandler<GetPackagesQuery, List<Models.Package>>
     {
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
@@ -19,10 +19,10 @@
             this.mapper = mapper;
         }
 
-        public async Task<List<Package>> Handle(GetPackagesQuery request, CancellationToken cancellationToken)
+        public async Task<List<Models.Package>> Handle(GetPackagesQuery request, CancellationToken cancellationToken)
         {
             var result = await repository.GetAsync();
-            return mapper.Map<List<Package>>(result);
+            return mapper.Map<List<Models.Package>>(result);
         }
     }
 }

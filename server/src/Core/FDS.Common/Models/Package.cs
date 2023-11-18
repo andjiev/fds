@@ -1,4 +1,4 @@
-﻿namespace FDS.Package.Service.Models
+﻿namespace FDS.Common.Models
 {
     using FDS.Common.DataContext.Enums;
 

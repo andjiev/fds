@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Entities = FDS.Common.Entities;
 
     public interface IPackageRepository
     {
@@ -10,7 +11,5 @@
         Task<Entities.Package> GetPackageAsync(int packageId);
 
         Task UpdatePackageAsync(Entities.Package package);
-
-        Task InsertPackagesAsync(List<Entities.Package> packages);
     }
 }

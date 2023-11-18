@@ -11,6 +11,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Models = FDS.Common.Models;
 
     public class UpdatePackageVersionCommandHandler : IRequestHandler<UpdatePackageVersionCommand, Models.Package>
     {

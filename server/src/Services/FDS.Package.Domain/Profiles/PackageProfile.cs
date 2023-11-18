@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using FDS.Common.Interfaces;
+    using Entities = FDS.Common.Entities;
 
     public class PackageProfile : Profile, IProfile
     {

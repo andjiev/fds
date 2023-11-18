@@ -1,4 +1,4 @@
-﻿namespace FDS.Package.Domain.Entities
+﻿namespace FDS.Common.Entities
 {
     using System;
     using FDS.Common.DataContext;

@@ -18,6 +18,7 @@ namespace FDS.Update.Service
                 {
                     services
                         .AddSettingsServices(hostContext.Configuration)
+                        .AddAutoMapper(typeof(FDS.Common.Profiles.PackageProfile))
                         .AddDataContextServices(hostContext.Configuration)
                         .AddConsumerServices(hostContext.HostingEnvironment)
                         .AddRepositories()

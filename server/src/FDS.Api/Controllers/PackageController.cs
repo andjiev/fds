@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models = Package.Service.Models;
+    using Models = FDS.Common.Models;
 
     [Route("api/packages")]
     [ApiController]

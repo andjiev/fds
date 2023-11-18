@@ -3,7 +3,6 @@
     using AutoMapper;
     using Dapper;
     using FDS.Common.Infrastructure;
-    using FDS.Package.Domain.Entities;
     using FDS.Package.Domain.DbResults;
     using FDS.Package.Domain.Repositories;
     using System.Collections.Generic;
@@ -12,6 +11,7 @@
     using FDS.Common.DataContext.Enums;
     using System;
     using System.Linq;
+    using Entities = FDS.Common.Entities;
 
     public class PackageRepository : BaseDapperRepository, IPackageRepository
     {
@@ -23,7 +23,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<List<Package>> GetAsync()
+        public async Task<List<Entities.Package>> GetAsync()
         {
             string packageQuery = @"
                         SELECT
@@ -36,10 +36,10 @@
                         FROM Package";
 
             var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery)).AsList();
-            return mapper.Map<List<Package>>(result);
+            return mapper.Map<List<Entities.Package>>(result);
         }
 
-        public async Task<Package> GetPackageAsync(int packageId)
+        public async Task<Entities.Package> GetPackageAsync(int packageId)
         {
             string query = @"
                         SELECT
@@ -57,10 +57,10 @@
                 Id = packageId
             });
 
-            return mapper.Map<Package>(package);
+            return mapper.Map<Entities.Package>(package);
         }
 
-        public async Task UpdatePackageAsync(Package package)
+        public async Task UpdatePackageAsync(Entities.Package package)
         {
             string query = @"
                         UPDATE Package
@@ -72,26 +72,6 @@
                 Id = package.Id,
                 Status = package.Status
             });
-        }
-
-        public async Task InsertPackagesAsync(List<Package> packages)
-        {
-            var sql = @"
-                    INSERT INTO [Package]
-                    (Name, CurrentVersion, LatestVersion, Status, CreatedOn)
-                    VALUES
-                    (@Name, @CurrentVersion, @LatestVersion, @Status, getdate())";
-
-            foreach (var package in packages)
-            {
-                await dbConnection.ExecuteAsync(sql, new
-                {
-                    Name = package.Name,
-                    CurrentVersion = package.CurrentVersion,
-                    LatestVersion = package.LatestVersion,
-                    Status = package.Status
-                });
-            }
         }
     }
 }

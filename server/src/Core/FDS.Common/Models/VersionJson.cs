@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace FDS.Package.Service.Models
+namespace FDS.Common.Models
 {
     public class VersionJson
     {

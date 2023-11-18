@@ -63,9 +63,16 @@ export const setupSignalRConnection = (): AppThunk => async (dispatch, store) =>
   const connection = createConnection('hubs/package');
   try {
     await connection.start();
+
     connection.on('packageUpdated', (result: Models.Package.Model) => {
       const packages = store().packageList.packages;
       dispatch(PackageStore.setPackages(packages.map(x => (x.id === result.id ? result : x))));
+    });
+
+    connection.on('syncPackages', (result: Models.Package.Model[]) => {
+      console.log('RESULT')
+      console.log(result);
+      dispatch(PackageStore.setPackages(result));
     });
   } catch (err) {
     console.log(err);

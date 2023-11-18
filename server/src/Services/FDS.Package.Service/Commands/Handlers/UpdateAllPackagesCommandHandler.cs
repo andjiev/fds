@@ -12,6 +12,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Models = FDS.Common.Models;
 
     public class UpdateAllPackagesCommandHandler : IRequestHandler<UpdateAllPackagesCommand, List<Models.Package>>
     {

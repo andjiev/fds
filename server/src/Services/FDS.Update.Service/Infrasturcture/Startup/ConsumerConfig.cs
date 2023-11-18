@@ -13,7 +13,8 @@
         public static IServiceCollection AddConsumerServices(this IServiceCollection services, IHostEnvironment environment)
         {
             services
-                 .AddTransient<StartUpdateConsumer>();
+                 .AddTransient<StartUpdateConsumer>()
+                 .AddTransient<SyncPackagesConsumer>();
 
             services.AddMassTransit(x =>
             {
@@ -45,6 +46,12 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "StartUpdate"), e =>
                     {
                         e.Consumer<StartUpdateConsumer>(context);
+                        e.PrefetchCount = 1;
+                    });
+
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "SyncPackages"), e =>
+                    {
+                        e.Consumer<SyncPackagesConsumer>(context);
                         e.PrefetchCount = 1;
                     });
                 });

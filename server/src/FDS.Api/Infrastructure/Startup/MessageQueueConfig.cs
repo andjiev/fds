@@ -10,7 +10,9 @@
     {
         public static IServiceCollection AddMessageQueueConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<PackageUpdatedConsumer>();
+            services
+                .AddTransient<PackageUpdatedConsumer>()
+                .AddTransient<SyncPackagesCompletedConsumer>();
 
             services.AddMassTransit(x =>
             {
@@ -24,6 +26,11 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "PackageUpdated"), e =>
                     {
                         e.Consumer<PackageUpdatedConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "SyncPackagesCompleted"), e =>
+                    {
+                        e.Consumer<SyncPackagesCompletedConsumer>(context);
                     });
                 });
             });
