@@ -7,8 +7,7 @@
     {
         public PackageProfile()
         {
-            CreateMap<DbResults.PackageDbResult, Entities.Package>()
-                .ForMember(x => x.Version, x => x.MapFrom(z => new Entities.Version(z.VersionId, z.VersionName)));
+            CreateMap<DbResults.PackageDbResult, Entities.Package>();
         }
     }
 }

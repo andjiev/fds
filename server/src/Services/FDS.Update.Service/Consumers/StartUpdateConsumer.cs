@@ -23,13 +23,13 @@
                 // wait for 10-15s to simulate package update.
                 Thread.Sleep(new Random().Next(3, 7) * 1000);
 
-                await repository.UpdatePackageVersionAsync(context.Message.PackageId, context.Message.VersionId);
+                // await repository.UpdatePackageVersionAsync(context.Message.PackageName, context.Message.VersionId);
 
-                await context.Publish<IPackageUpdated>(new
-                {
-                    context.Message.CorrelationId,
-                    context.Message.PackageId
-                });
+                // await context.Publish<IPackageUpdated>(new
+                // {
+                //     context.Message.CorrelationId,
+                //     context.Message.PackageId
+                // });
             }
             catch (Exception ex)
             {

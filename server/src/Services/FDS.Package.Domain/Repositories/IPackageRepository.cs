@@ -7,10 +7,10 @@
     {
         Task<List<Entities.Package>> GetAsync();
 
-        Task<Entities.Package> GetPackageAsync(int packageId, bool includeVersionUpdate = true, bool latestVersionUpdate = false);
+        Task<Entities.Package> GetPackageAsync(int packageId);
 
         Task UpdatePackageAsync(Entities.Package package);
 
-        Task UpdatePackagesToInitialStateAsync();
+        Task InsertPackagesAsync(List<Entities.Package> packages);
     }
 }

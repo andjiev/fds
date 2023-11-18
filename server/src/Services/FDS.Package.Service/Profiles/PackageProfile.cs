@@ -8,7 +8,8 @@
     {
         public PackageProfile()
         {
-            CreateMap<Entities.Package, Models.Package>();
+            CreateMap<Entities.Package, Models.Package>()
+                .ReverseMap();
         }
     }
 }

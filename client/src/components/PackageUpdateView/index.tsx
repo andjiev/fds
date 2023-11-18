@@ -17,8 +17,8 @@ const PackageUpdateView = () => {
     dispatch(setTitle(translate('Page_Title_Packages', 'Packages')));
   }, []);
 
-  const onUpdate = (packageId: number, versionId: number) => {
-    dispatch(onUpdatePackage(packageId, versionId));
+  const onUpdate = (packageId: number) => {
+    dispatch(onUpdatePackage(packageId));
   }
 
   const onUpdateAll = () => {
@@ -33,14 +33,14 @@ const PackageUpdateView = () => {
     <>
       <Box mt={2}>
         <Grid container spacing={3}>
-          <Grid item xs={6}>
+          <Grid item xs={9}>
             <TableContainer component={Paper}>
               <Table>
                 <StyledTableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
-                    <TableCell>Version</TableCell>
-                    <TableCell>Update</TableCell>
+                    <TableCell>Current version</TableCell>
+                    <TableCell>Latest version</TableCell>
                     <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </StyledTableHead>
@@ -49,14 +49,14 @@ const PackageUpdateView = () => {
                     return (
                       <TableRow key={item.id} style={{ height: 70 }}>
                         <TableCell>{translate(item.name)}</TableCell>
-                        <TableCell>v.{item.version.name}</TableCell>
-                        <TableCell>{item.versionUpdate ? `v.${item.versionUpdate.name} is available` : item.status === Status.Updated ? 'Up to date' : 'Updating...'}</TableCell>
+                        <TableCell>{item.currentVersion}</TableCell>
+                        <TableCell>{item.latestVersion}</TableCell>
                         <TableCell align="center">
-                          {item.versionUpdate ? (
-                            <IconButton size="small" onClick={() => onUpdate(item.id, item.versionUpdate.id)}>
+                          {item.status === Status.UpdateNeeded ? (
+                            <IconButton size="small" onClick={() => onUpdate(item.id)}>
                               <SystemUpdateAltIcon />
                             </IconButton>
-                          ) : item.status === Status.Updated ? (
+                          ) : item.status === Status.UpToDate ? (
                             ''
                           ) : (
                             <CircularProgress size="20px" />
@@ -69,7 +69,7 @@ const PackageUpdateView = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={3}>
             <Box>
               <Button variant="contained" color="primary" onClick={onUpdateAll}>
                 Update all packages

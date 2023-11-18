@@ -1,5 +1,6 @@
 ﻿namespace FDS.Package.Domain.Entities
 {
+    using System;
     using FDS.Common.DataContext;
     using FDS.Common.DataContext.Enums;
 
@@ -7,20 +8,23 @@
     {
         protected Package(int id) : base(id) { }
 
-        public Package(int id, string name, Version version, Version versionUpdate, PackageStatus status)
+        public Package(int id, string name, string currentVersion, string latestVersion, DateTime createdOn, PackageStatus status)
             : base(id)
         {
             Name = name;
-            Version = version;
-            VersionUpdate = versionUpdate;
+            CurrentVersion = currentVersion;
+            LatestVersion = latestVersion;
+            CreatedOn = createdOn;
             Status = status;
         }
 
         public string Name { get; private set; }
 
-        public Version Version { get; private set; }
+        public string CurrentVersion {get; private set;}
 
-        public Version VersionUpdate { get; private set; }
+        public string LatestVersion { get; private set; }
+
+        public DateTime CreatedOn { get; private set; }
 
         public PackageStatus Status { get; private set; }
 

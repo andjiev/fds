@@ -10,6 +10,8 @@
     using System.Data;
     using System.Threading.Tasks;
     using FDS.Common.DataContext.Enums;
+    using System;
+    using System.Linq;
 
     public class PackageRepository : BaseDapperRepository, IPackageRepository
     {
@@ -27,93 +29,33 @@
                         SELECT
                             Package.Id AS Id,
                             Package.Name AS Name,
-                            Package.Status AS Status,
-                            Version.Id As VersionId,
-                            Version.Name AS VersionName,
-                            Version.CreatedOn AS VersionCreatedOn
-                        FROM Package
-                        JOIN Version
-                            ON Package.VersionId = Version.Id";
-
-            string versionUpdateQuery = @"
-                                SELECT TOP 1
-                                    Version.Id as Id,
-									Version.Name as Name
-                                FROM Version
-								WHERE Version.Id != @VersionId AND Version.CreatedOn > @VersionCreatedOn AND Version.PackageId = @PackageId
-								GROUP BY Version.Id, Version.Name";
+                            Package.CurrentVersion AS CurrentVersion,
+                            Package.LatestVersion AS LatestVersion,
+                            Package.CreatedOn AS CreatedOn,
+                            Package.Status AS Status
+                        FROM Package";
 
             var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery)).AsList();
-
-            foreach (var package in result)
-            {
-                if (package.Status == PackageStatus.Updating)
-                {
-                    continue;
-                }
-
-                var versionResult = await dbConnection.QueryFirstOrDefaultAsync<VersionDbResult>(versionUpdateQuery, new
-                {
-                    VersionId = package.VersionId,
-                    VersionCreatedOn = package.VersionCreatedOn,
-                    PackageId = package.Id
-                });
-
-                package.VersionUpdate = versionResult;
-            }
-
             return mapper.Map<List<Package>>(result);
         }
 
-        public async Task<Package> GetPackageAsync(int packageId, bool includeVersionUpdate = true, bool latestVersionUpdate = false)
+        public async Task<Package> GetPackageAsync(int packageId)
         {
             string query = @"
                         SELECT
                             Package.Id AS Id,
                             Package.Name AS Name,
-                            Package.Status AS Status,
-                            Version.Id As VersionId,
-                            Version.Name AS VersionName,
-                            Version.CreatedOn As VersionCreatedOn
+                            Package.CurrentVersion AS CurrentVersion,
+                            Package.LatestVersion AS LatestVersion,
+                            Package.CreatedOn AS CreatedOn
+                            Package.Status AS Status
                         FROM Package
-                        JOIN Version
-                            ON Package.VersionId = Version.Id
                         WHERE Package.Id = @Id";
-
-            string nextVersionUpdateQuery = @"
-                                SELECT TOP 1
-                                    Version.Id as Id,
-									Version.Name as Name
-                                FROM Version
-								WHERE Version.Id != @VersionId AND Version.CreatedOn > @VersionCreatedOn AND Version.PackageId = @PackageId
-								GROUP BY Version.Id, Version.Name";
-
-            string latestVersionUpdateQuery = @"
-                                SELECT TOP 1
-                                    Version.Id as Id,
-                                    Version.Name as Name
-                                FROM Version
-                                WHERE Version.PackageId = @PackageId
-                                ORDER BY CreatedOn desc";
-
-            string versionUpdateQuery = latestVersionUpdate ? latestVersionUpdateQuery : nextVersionUpdateQuery;
 
             var package = await dbConnection.QueryFirstOrDefaultAsync<PackageDbResult>(query, new
             {
                 Id = packageId
             });
-
-            if (includeVersionUpdate && package.Status != PackageStatus.Updating)
-            {
-                var versionResult = await dbConnection.QueryFirstOrDefaultAsync<VersionDbResult>(versionUpdateQuery, new
-                {
-                    VersionId = package.VersionId,
-                    VersionCreatedOn = package.VersionCreatedOn,
-                    PackageId = package.Id
-                });
-
-                package.VersionUpdate = versionResult;
-            }
 
             return mapper.Map<Package>(package);
         }
@@ -132,21 +74,24 @@
             });
         }
 
-        public async Task UpdatePackagesToInitialStateAsync()
+        public async Task InsertPackagesAsync(List<Package> packages)
         {
-            string query = @"
-                        UPDATE Package
-                        SET Package.VersionId = @VersionId, Package.VersionName = @VersionName, Status = 1
-                        WHERE Package.Id = @PackageId";
+            var sql = @"
+                    INSERT INTO [Package]
+                    (Name, CurrentVersion, LatestVersion, Status, CreatedOn)
+                    VALUES
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, getdate())";
 
-            await dbConnection.ExecuteAsync(query, new List<object>
+            foreach (var package in packages)
             {
-                new { PackageId = 1, VersionId = 2, VersionName = "v.1.2-beta" },
-                new { PackageId = 2, VersionId = 7, VersionName = "v.3.0" },
-                new { PackageId = 3, VersionId = 9, VersionName = "v.1.0" },
-                new { PackageId = 4, VersionId = 13, VersionName = "v.2.0" },
-                new { PackageId = 5, VersionId = 16, VersionName = "v.1.1-beta" }
-            });
+                await dbConnection.ExecuteAsync(sql, new
+                {
+                    Name = package.Name,
+                    CurrentVersion = package.CurrentVersion,
+                    LatestVersion = package.LatestVersion,
+                    Status = package.Status
+                });
+            }
         }
     }
 }

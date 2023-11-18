@@ -27,7 +27,7 @@
             {
                 PackageId = packageId,
                 VersionId = versionId,
-                Status = PackageStatus.Updated
+                Status = PackageStatus.UpToDate
             });
         }
     }

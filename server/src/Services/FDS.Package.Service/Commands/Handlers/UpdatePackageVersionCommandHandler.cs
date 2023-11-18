@@ -29,7 +29,7 @@
 
         public async Task<Models.Package> Handle(UpdatePackageVersionCommand request, CancellationToken cancellationToken)
         {
-            var package = await repository.GetPackageAsync(request.PackageId, false);
+            var package = await repository.GetPackageAsync(request.PackageId);
             if (package == null)
             {
                 throw new ArgumentNullException("Package id is not valid");

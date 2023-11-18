@@ -35,22 +35,19 @@
 
             foreach(var package in packages)
             {
-                if(package.Status == PackageStatus.Initial)
+                if(package.Status == PackageStatus.UpdateNeeded)
                 {
                     package.UpdateStatus(PackageStatus.Updating);
                     await repository.UpdatePackageAsync(package);
-                    await StartPackageUpdate(package.Id, package.VersionUpdate.Id, cancellationToken);
+                    await StartPackageUpdate(package.Name, cancellationToken);
                 }
-                packagesToReturn.Add(mapper.Map<Models.Package>(package, opt =>
-                {
-                    opt.AfterMap((src, dest) => dest.VersionUpdate = null);
-                }));
+                packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
 
             return packagesToReturn;
         }
 
-        private async Task StartPackageUpdate(int packageId, int versionId, CancellationToken cancellationToken)
+        private async Task StartPackageUpdate(string packageName, CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
@@ -60,8 +57,7 @@
             await endpoint.Send<IStartUpdate>(new
             {
                 CorrelationId = correlation,
-                PackageId = packageId,
-                VersionId = versionId
+                PackageName = packageName
             }, cancellationToken: cancellationToken);
         }
     }

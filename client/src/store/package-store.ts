@@ -41,9 +41,9 @@ export const onGetPackages = (): AppThunk => async (dispatch, store) => {
   }
 };
 
-export const onUpdatePackage = (packageId: number, versionId: number): AppThunk => async (dispatch, store) => {
+export const onUpdatePackage = (packageId: number): AppThunk => async (dispatch, store) => {
   try {
-    const result = await PackageService.updatePackage(packageId, versionId);
+    const result = await PackageService.updatePackage(packageId);
     if (result.data) {
       dispatch(setPackage(result.data));
     }

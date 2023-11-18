@@ -19,8 +19,7 @@
                 .AddTransient<IRequestHandler<GetPackagesQuery, List<Package>>, GetPackagesQueryHandler>()
                 .AddTransient<IRequestHandler<UpdatePackageVersionCommand, Package>, UpdatePackageVersionCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateAllPackagesCommand, List<Package>>, UpdateAllPackagesCommandHandler>()
-                .AddTransient<IRequestHandler<UpdatePackagesToInitialStateCommand, List<Package>>, UpdatePackagesToInitialStateCommandHandler>()
-                .AddTransient<IRequestHandler<CreatePackageVersionCommand, Package>, CreatePackageVersionCommandHandler>();
+                .AddTransient<IRequestHandler<InitializePackagesCommand, Unit>, InitializePackagesCommandHandler>();
 
             services.AddSingleton<IHostedService, BusService>();
 
