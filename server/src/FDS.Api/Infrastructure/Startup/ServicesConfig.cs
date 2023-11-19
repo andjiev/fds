@@ -17,9 +17,9 @@
         {
             services
                 .AddTransient<IRequestHandler<GetPackagesQuery, List<Models.Package>>, GetPackagesQueryHandler>()
-                .AddTransient<IRequestHandler<UpdatePackageVersionCommand, Models.Package>, UpdatePackageVersionCommandHandler>()
+                .AddTransient<IRequestHandler<UpdatePackageCommand, Models.Package>, UpdatePackageCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateAllPackagesCommand, List<Models.Package>>, UpdateAllPackagesCommandHandler>()
-                .AddTransient<IRequestHandler<InitializePackagesCommand, Unit>, InitializePackagesCommandHandler>();
+                .AddTransient<IRequestHandler<SyncPackagesCommand, Unit>, SyncPackagesCommandHandler>();
 
             services.AddSingleton<IHostedService, BusService>();
 

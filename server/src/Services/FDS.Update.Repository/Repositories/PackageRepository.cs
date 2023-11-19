@@ -16,19 +16,19 @@
         {
         }
 
-        public async Task UpdatePackageVersionAsync(int packageId, int versionId)
+        public async Task UpdatePackageVersionAsync(int packageId, string packageVersion)
         {
             string query = @"
                         UPDATE Package
-                        SET VersionId = @VersionId,
-                            VersionName = (SELECT Name FROM Version WHERE Id = @VersionId),
-                            Status = @Status
+                        SET 
+                            Status = @Status,
+                            CurrentVersion = @Version
                         WHERE Package.Id = @PackageId";
 
             await dbConnection.ExecuteAsync(query, new
             {
                 PackageId = packageId,
-                VersionId = versionId,
+                Version = packageVersion,
                 Status = PackageStatus.UpToDate
             });
         }
@@ -53,6 +53,21 @@
                     Status = package.Status
                 });
             }
+        }
+
+        
+        public async Task ResetStatusAsync(int packageId)
+        {
+            string query = @"
+                        UPDATE Package
+                        SET Status = @Status
+                        WHERE Package.Id = @PackageId";
+
+            await dbConnection.ExecuteAsync(query, new
+            {
+                PackageId = packageId,
+                Status = PackageStatus.UpdateNeeded
+            });
         }
     }
 }

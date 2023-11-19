@@ -13,8 +13,8 @@ const updateAllPackages = async (): Promise<AxiosResponse<Models.Package.Model[]
   return httpService.put<Models.Package.Model[]>(`/api/packages/updateAll`);
 };
 
-const resetPackages = async (): Promise<AxiosResponse<Models.Package.Model[]>> => {
-  return httpService.put<Models.Package.Model[]>(`/api/packages/reset`);
+const syncPackages = async (): Promise<AxiosResponse<Models.Package.Model[]>> => {
+  return httpService.put<Models.Package.Model[]>(`/api/packages/sync`);
 };
 
-export { getPackages, updatePackage, updateAllPackages, resetPackages };
+export { getPackages, updatePackage, updateAllPackages, syncPackages };

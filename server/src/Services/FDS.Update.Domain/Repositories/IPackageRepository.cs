@@ -6,8 +6,10 @@
 
     public interface IPackageRepository
     {
-        Task UpdatePackageVersionAsync(int packageId, int versionId);
+        Task UpdatePackageVersionAsync(int packageId, string packageVersion);
 
         Task InsertPackagesAsync(List<Entities.Package> packages);
+
+        Task ResetStatusAsync(int packageId);
     }
 }

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button } from '@mui/material';
-import { onUpdateAllPackages, onUpdatePackage, onResetPackages } from '@/store/package-store';
+import { onUpdateAllPackages, onUpdatePackage, onSyncPackages } from '@/store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { translate } from '@/lib/translate';
@@ -25,8 +25,8 @@ const PackageUpdateView = () => {
     dispatch(onUpdateAllPackages());
   }
 
-  const onReset = () => {
-    dispatch(onResetPackages());
+  const onSync = () => {
+    dispatch(onSyncPackages());
   }
 
   return (
@@ -71,13 +71,13 @@ const PackageUpdateView = () => {
           </Grid>
           <Grid item xs={3}>
             <Box>
-              <Button variant="contained" color="primary" onClick={onUpdateAll}>
-                Update all packages
+              <Button variant="contained" color="primary" onClick={onSync}>
+                Sync
               </Button>
             </Box>
             <Box mt={3}>
-              <Button variant="contained" color="secondary" onClick={onReset}>
-                Reset packages
+              <Button variant="contained" color="secondary" onClick={onUpdateAll}>
+                Update all
               </Button>
             </Box>
           </Grid>

@@ -13,14 +13,14 @@
     using System.Threading.Tasks;
     using Models = FDS.Common.Models;
 
-    public class UpdatePackageVersionCommandHandler : IRequestHandler<UpdatePackageVersionCommand, Models.Package>
+    public class UpdatePackageCommandHandler : IRequestHandler<UpdatePackageCommand, Models.Package>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
 
-        public UpdatePackageVersionCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
+        public UpdatePackageCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
         {
             this.bus = bus;
             this.configuration = configuration;
@@ -28,7 +28,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<Models.Package> Handle(UpdatePackageVersionCommand request, CancellationToken cancellationToken)
+        public async Task<Models.Package> Handle(UpdatePackageCommand request, CancellationToken cancellationToken)
         {
             var package = await repository.GetPackageAsync(request.PackageId);
             if (package == null)
@@ -39,11 +39,11 @@
             package.UpdateStatus(PackageStatus.Updating);
 
             await repository.UpdatePackageAsync(package);
-            await StartPackageUpdate(request.PackageId, request.VersionId, cancellationToken);
+            await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
             return mapper.Map<Models.Package>(package);
         }
 
-        private async Task StartPackageUpdate(int packageId, int versionId, CancellationToken cancellationToken)
+        private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
@@ -54,7 +54,8 @@
             {
                 CorrelationId = correlation,
                 PackageId = packageId,
-                VersionId = versionId
+                PackageName = packageName,
+                PackageVersion = packageVersion,
             }, cancellationToken: cancellationToken);
         }
     }

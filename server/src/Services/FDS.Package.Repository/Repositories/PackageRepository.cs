@@ -47,7 +47,7 @@
                             Package.Name AS Name,
                             Package.CurrentVersion AS CurrentVersion,
                             Package.LatestVersion AS LatestVersion,
-                            Package.CreatedOn AS CreatedOn
+                            Package.CreatedOn AS CreatedOn,
                             Package.Status AS Status
                         FROM Package
                         WHERE Package.Id = @Id";

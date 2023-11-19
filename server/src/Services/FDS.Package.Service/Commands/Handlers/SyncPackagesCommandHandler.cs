@@ -10,18 +10,18 @@
     using FDS.Common.Extensions;
     using System;
 
-    public class InitializePackagesCommandHandler : IRequestHandler<InitializePackagesCommand, Unit>
+    public class SyncPackagesCommandHandler : IRequestHandler<SyncPackagesCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
 
-        public InitializePackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration)
+        public SyncPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration)
         {
             this.bus = bus;
             this.configuration = configuration;
         }
 
-        public async Task<Unit> Handle(InitializePackagesCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SyncPackagesCommand request, CancellationToken cancellationToken)
         {
             await SyncPackages(cancellationToken);
             return Unit.Task.Result;

@@ -29,14 +29,14 @@
         [HttpPut("sync")]
         public async Task<ActionResult> InitializePackages()
         {
-            await mediator.Send(new InitializePackagesCommand());
+            await mediator.Send(new SyncPackagesCommand());
             return Ok();
         }
 
         [HttpPut("{packageId:int}")]
-        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId, [FromBody] Models.UpdatePackage model)
+        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId)
         {
-            var package = await mediator.Send(new UpdatePackageVersionCommand(packageId, model.VersionId));
+            var package = await mediator.Send(new UpdatePackageCommand(packageId));
             return Ok(package);
         }
 

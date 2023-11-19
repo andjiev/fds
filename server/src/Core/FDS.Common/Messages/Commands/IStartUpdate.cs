@@ -4,6 +4,8 @@
 
     public interface IStartUpdate : CorrelatedBy<string>
     {
+        int PackageId { get; }
         string PackageName { get; }
+        string PackageVersion { get; }
     }
 }

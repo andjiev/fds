@@ -4,6 +4,7 @@
     using FDS.Update.Domain.Repositories;
     using MassTransit;
     using System;
+    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -20,17 +21,23 @@
         {
             try
             {
+                var process = new Process();
+                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.FileName = "/usr/local/bin/npm";
+                process.StartInfo.Arguments = "install " + context.Message.PackageName + "@latest";
+                process.Start();
+                await process.WaitForExitAsync();
 
-                // await repository.UpdatePackageVersionAsync(context.Message.PackageName, context.Message.VersionId);
-
-                // await context.Publish<IPackageUpdated>(new
-                // {
-                //     context.Message.CorrelationId,
-                //     context.Message.PackageId
-                // });
+                await repository.UpdatePackageVersionAsync(context.Message.PackageId, context.Message.PackageVersion);
+                await context.Publish<IPackageUpdated>(new
+                {
+                    context.Message.CorrelationId,
+                    context.Message.PackageId
+                });                
             }
             catch (Exception ex)
             {
+                await repository.ResetStatusAsync(context.Message.PackageId);
                 throw new Exception("Error occured while updating package");
             }
         }

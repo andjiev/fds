@@ -40,7 +40,7 @@
                 {
                     package.UpdateStatus(PackageStatus.Updating);
                     await repository.UpdatePackageAsync(package);
-                    await StartPackageUpdate(package.Name, cancellationToken);
+                    await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
                 }
                 packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
@@ -48,7 +48,7 @@
             return packagesToReturn;
         }
 
-        private async Task StartPackageUpdate(string packageName, CancellationToken cancellationToken)
+        private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
@@ -58,7 +58,9 @@
             await endpoint.Send<IStartUpdate>(new
             {
                 CorrelationId = correlation,
-                PackageName = packageName
+                PackageId = packageId,
+                PackageName = packageName,
+                PackageVersion = packageVersion
             }, cancellationToken: cancellationToken);
         }
     }
