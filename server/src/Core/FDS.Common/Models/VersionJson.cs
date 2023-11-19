@@ -6,5 +6,8 @@ namespace FDS.Common.Models
     {
         [JsonPropertyName("version")]
         public string Version { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
     }
 }

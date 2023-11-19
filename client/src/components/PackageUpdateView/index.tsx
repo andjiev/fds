@@ -39,6 +39,8 @@ const PackageUpdateView = () => {
                 <StyledTableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
+                    <TableCell align="center">Score</TableCell>
+                    <TableCell>Description</TableCell>
                     <TableCell>Current version</TableCell>
                     <TableCell>Latest version</TableCell>
                     <TableCell align="center">Action</TableCell>
@@ -48,7 +50,9 @@ const PackageUpdateView = () => {
                   {packages.map(item => {
                     return (
                       <TableRow key={item.id} style={{ height: 70 }}>
-                        <TableCell>{translate(item.name)}</TableCell>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell align="center">{item.score}</TableCell>
+                        <TableCell>{item.description}</TableCell>
                         <TableCell>{item.currentVersion}</TableCell>
                         <TableCell>{item.latestVersion}</TableCell>
                         <TableCell align="center">

@@ -4,6 +4,10 @@ declare module Models.Package {
     name: string;
     currentVersion: string;
     latestVersion: string;
+    score?: number;
+    url: string;
+    description: string;
     status: Enums.Status;
+    updatedOn: Date;
   }
 }

@@ -31,7 +31,10 @@
                             Package.Name AS Name,
                             Package.CurrentVersion AS CurrentVersion,
                             Package.LatestVersion AS LatestVersion,
-                            Package.CreatedOn AS CreatedOn,
+                            Package.Score as Score,
+                            Package.Url as Url,
+                            Package.Description as Description,
+                            Package.UpdatedOn AS UpdatedOn,
                             Package.Status AS Status
                         FROM Package";
 
@@ -47,7 +50,10 @@
                             Package.Name AS Name,
                             Package.CurrentVersion AS CurrentVersion,
                             Package.LatestVersion AS LatestVersion,
-                            Package.CreatedOn AS CreatedOn,
+                            Package.Score as Score,
+                            Package.Url as Url,
+                            Package.Description as Description,
+                            Package.UpdatedOn AS UpdatedOn,
                             Package.Status AS Status
                         FROM Package
                         WHERE Package.Id = @Id";

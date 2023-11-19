@@ -13,7 +13,13 @@
 
         public string LatestVersion { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public int? Score { get; set; }
+
+        public string Url { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime? UpdatedOn { get; set; }
 
         public PackageStatus Status { get; set; }
     }

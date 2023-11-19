@@ -1,5 +1,6 @@
 ﻿namespace FDS.Common.Models
 {
+    using System;
     using FDS.Common.DataContext.Enums;
 
     public class Package
@@ -11,6 +12,14 @@
         public string CurrentVersion { get; set; }
 
         public string LatestVersion { get; set; }
+
+        public int? Score { get; set; }
+
+        public string Url { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime? UpdatedOn { get; set; }
 
         public PackageStatus Status { get; set; }
     }

@@ -22,7 +22,8 @@
                         UPDATE Package
                         SET 
                             Status = @Status,
-                            CurrentVersion = @Version
+                            CurrentVersion = @Version,
+                            UpdatedOn = getdate()
                         WHERE Package.Id = @PackageId";
 
             await dbConnection.ExecuteAsync(query, new
@@ -39,9 +40,9 @@
 
             var sql = @"
                     INSERT INTO [Package]
-                    (Name, CurrentVersion, LatestVersion, Status, CreatedOn)
+                    (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description)
                     VALUES
-                    (@Name, @CurrentVersion, @LatestVersion, @Status, getdate())";
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description)";
 
             foreach (var package in packages)
             {
@@ -50,11 +51,13 @@
                     Name = package.Name,
                     CurrentVersion = package.CurrentVersion,
                     LatestVersion = package.LatestVersion,
-                    Status = package.Status
+                    Status = package.Status,
+                    Score = package.Score,
+                    Url = package.Url,
+                    Description = package.Description
                 });
             }
         }
-
         
         public async Task ResetStatusAsync(int packageId)
         {

@@ -19,9 +19,12 @@ GO
 CREATE TABLE [dbo].[Package](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](100) NOT NULL,
-  [CurrentVersion] [varchar](50) NULL,
-  [LatestVersion] [varchar](50) NULL,
-  [CreatedOn] [datetime] NOT NULL,
-  [Status] [int] DEFAULT(1) NOT NULL
+  [CurrentVersion] [varchar](50) NOT NULL,
+  [LatestVersion] [varchar](50) NOT NULL,
+  [Score] [int] NULL,
+  [Url] [varchar](200) NOT NULL,
+  [Status] [int] DEFAULT(1) NOT NULL,
+  [Description] [varchar](1000) NULL,
+  [UpdatedOn] [datetime] NULL
  ) ON [PRIMARY]
 GO
