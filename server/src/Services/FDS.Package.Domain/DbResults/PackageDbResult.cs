@@ -22,5 +22,7 @@
         public DateTime? UpdatedOn { get; set; }
 
         public PackageStatus Status { get; set; }
+
+        public PackageType Type { get; set; }
     }
 }

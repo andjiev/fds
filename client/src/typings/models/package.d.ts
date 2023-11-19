@@ -9,5 +9,6 @@ declare module Models.Package {
     description: string;
     status: Enums.Status;
     updatedOn: Date;
+    type: Enums.Type;
   }
 }

@@ -7,5 +7,8 @@ namespace FDS.Common.Models
     {
         [JsonPropertyName("dependencies")]
         public Dictionary<string, string> Dependencies { get; set; }
+
+        [JsonPropertyName("devDependencies")]
+        public Dictionary<string, string> DevDependencies { get; set; } 
     }
 }

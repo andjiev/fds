@@ -40,9 +40,9 @@
 
             var sql = @"
                     INSERT INTO [Package]
-                    (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description)
+                    (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description, Type)
                     VALUES
-                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description)";
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type)";
 
             foreach (var package in packages)
             {
@@ -54,7 +54,8 @@
                     Status = package.Status,
                     Score = package.Score,
                     Url = package.Url,
-                    Description = package.Description
+                    Description = package.Description,
+                    Type = package.Type
                 });
             }
         }

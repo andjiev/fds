@@ -35,7 +35,8 @@
                             Package.Url as Url,
                             Package.Description as Description,
                             Package.UpdatedOn AS UpdatedOn,
-                            Package.Status AS Status
+                            Package.Status AS Status,
+                            Package.Type AS Type
                         FROM Package";
 
             var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery)).AsList();
@@ -54,7 +55,8 @@
                             Package.Url as Url,
                             Package.Description as Description,
                             Package.UpdatedOn AS UpdatedOn,
-                            Package.Status AS Status
+                            Package.Status AS Status,
+                            Package.Type AS Type
                         FROM Package
                         WHERE Package.Id = @Id";
 

@@ -442,10 +442,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@microsoft/signalr@^8.0.0":
-  "integrity" "sha512-K/wS/VmzRWePCGqGh8MU8OWbS1Zvu7DG7LSJS62fBB8rJUXwwj4axQtqrAAwKGUZHQF6CuteuQR9xMsVpM2JNA=="
-  "resolved" "https://registry.npmjs.org/@microsoft/signalr/-/signalr-8.0.0.tgz"
-  "version" "8.0.0"
+"@microsoft/signalr@^7.0.12":
+  "integrity" "sha512-dnS7gSJF5LxByZwJaj82+F1K755ya7ttPT+JnSeCBef3sL8p8FBkHePXphK8NSuOquIb7vsphXWa28A+L2SPpw=="
+  "resolved" "https://registry.npmjs.org/@microsoft/signalr/-/signalr-7.0.14.tgz"
+  "version" "7.0.14"
   dependencies:
     "abort-controller" "^3.0.0"
     "eventsource" "^2.0.2"
@@ -471,14 +471,14 @@
   "resolved" "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.14.18.tgz"
   "version" "5.14.18"
 
-"@mui/icons-material@^5.14.18":
+"@mui/icons-material@^5.14.14":
   "integrity" "sha512-o2z49R1G4SdBaxZjbMmkn+2OdT1bKymLvAYaB6pH59obM1CYv/0vAVm6zO31IqhwtYwXv6A7sLIwCGYTaVkcdg=="
   "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.14.18.tgz"
   "version" "5.14.18"
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-"@mui/material@^5.0.0", "@mui/material@^5.14.18":
+"@mui/material@^5.0.0", "@mui/material@^5.14.14":
   "integrity" "sha512-y3UiR/JqrkF5xZR0sIKj6y7xwuEiweh9peiN3Zfjy1gXWXhz5wjlaLdoxFfKIEBUFfeQALxr/Y8avlHH+B9lpQ=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.14.18.tgz"
   "version" "5.14.18"
@@ -505,7 +505,7 @@
     "@mui/utils" "^5.14.18"
     "prop-types" "^15.8.1"
 
-"@mui/styled-engine-sc@^6.0.0-alpha.6":
+"@mui/styled-engine-sc@^6.0.0-alpha.2":
   "integrity" "sha512-gLES93s5AyZss2EOGBpUF5YNtjbCnRAN1csuFMs8eRnFsQdJGPOdLF1SwgTvOmGDM3JFuGOEOE2XEVuvjhnoUw=="
   "resolved" "https://registry.npmjs.org/@mui/styled-engine-sc/-/styled-engine-sc-6.0.0-alpha.6.tgz"
   "version" "6.0.0-alpha.6"
@@ -863,7 +863,7 @@
   "resolved" "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   "version" "0.4.0"
 
-"axios@^1.6.2":
+"axios@^1.5.1":
   "integrity" "sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A=="
   "resolved" "https://registry.npmjs.org/axios/-/axios-1.6.2.tgz"
   "version" "1.6.2"
@@ -1456,7 +1456,7 @@
   dependencies:
     "react-is" "^16.7.0"
 
-"i18next@^23.7.6":
+"i18next@^23.6.0":
   "integrity" "sha512-O66BhXBw0fH4bEJMA0/klQKPEbcwAp5wjXEL803pdAynNbg2f4qhLIYlNHJyE7icrL6XmSZKPYaaXwy11kJ6YQ=="
   "resolved" "https://registry.npmjs.org/i18next/-/i18next-23.7.6.tgz"
   "version" "23.7.6"
@@ -1895,7 +1895,7 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.0.tgz"
   "version" "0.14.0"
 
-"react-router-dom@^6.19.0":
+"react-router-dom@^6.17.0":
   "integrity" "sha512-N6dWlcgL2w0U5HZUUqU2wlmOrSb3ighJmtQ438SWbhB1yuLTXQ8yyTBMK3BSvVjp7gBtKurT554nCtMOgxCZmQ=="
   "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.19.0.tgz"
   "version" "6.19.0"
@@ -2062,7 +2062,7 @@
   "resolved" "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   "version" "3.1.1"
 
-"styled-components@^6.0.0", "styled-components@^6.1.1":
+"styled-components@^6.0.0", "styled-components@^6.1.0":
   "integrity" "sha512-cpZZP5RrKRIClBW5Eby4JM1wElLVP4NQrJbJ0h10TidTyJf4SIIwa3zLXOoPb4gJi8MsJ8mjq5mu2IrEhZIAcQ=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-6.1.1.tgz"
   "version" "6.1.1"

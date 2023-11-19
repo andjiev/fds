@@ -25,6 +25,7 @@ CREATE TABLE [dbo].[Package](
   [Url] [varchar](200) NOT NULL,
   [Status] [int] DEFAULT(1) NOT NULL,
   [Description] [varchar](1000) NULL,
+  [Type] [int] DEFAULT(1) NOT NULL,
   [UpdatedOn] [datetime] NULL
  ) ON [PRIMARY]
 GO

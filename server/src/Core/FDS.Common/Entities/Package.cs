@@ -17,7 +17,8 @@
             string url,
             string description,
             DateTime? updatedOn,
-            PackageStatus status)
+            PackageStatus status,
+            PackageType type)
             : base(id)
         {
             Name = name;
@@ -28,6 +29,7 @@
             Description = description;
             UpdatedOn = updatedOn;
             Status = status;
+            Type = type;
         }
 
         public string Name { get; private set; }
@@ -45,6 +47,8 @@
         public DateTime? UpdatedOn { get; private set; }
 
         public PackageStatus Status { get; private set; }
+
+        public PackageType Type { get; private set; }
 
         public void UpdateStatus(PackageStatus status)
         {
