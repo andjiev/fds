@@ -8,7 +8,6 @@ import Loading from './components/Loading';
 import { onGetPackages } from './store/package-store';
 
 const Menu = lazy(() => import('./components/Menu'));
-const Navigation = lazy(() => import('./components/Navigation'));
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -26,19 +25,10 @@ const App = () => {
       {applicationBootstraped ? (
         <Suspense fallback={renderLoader()}>
           <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
-            <Grid container>
-              <Grid item xs={12} md={4} lg={3} xl={2}>
-                <Navigation />
-              </Grid>
-              <Grid item xs={12} md={8} lg={9} xl={10}>
-                <Box>
-                  <Menu />
-                  <Box m={3}>
-                    <Router />
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
+            <Menu />
+            <Box m={3}>
+              <Router />
+            </Box>
           </Box>
         </Suspense>
       ) : (

@@ -8,6 +8,7 @@ import { translate } from '@/lib/translate';
 import { Status } from '@/lib/enums';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import { setTitle } from '@/store/shared-store';
+import { ScoreBadge } from '../ScoreBadge';
 
 const PackageUpdateView = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const PackageUpdateView = () => {
     <>
       <Box mt={2}>
         <Grid container spacing={3}>
-          <Grid item xs={9}>
+          <Grid item xs={10}>
             <TableContainer component={Paper}>
               <Table>
                 <StyledTableHead>
@@ -51,7 +52,16 @@ const PackageUpdateView = () => {
                     return (
                       <TableRow key={item.id} style={{ height: 70 }}>
                         <TableCell>{item.name}</TableCell>
-                        <TableCell align="center">{item.score}</TableCell>
+                        <TableCell align="center">
+                          <ScoreBadge
+                            href={item.url}
+                            score={item.score}
+                            target="_blank"
+                            title="Visit Snyk.io package details"
+                          >
+                            {item.score}%
+                          </ScoreBadge>
+                        </TableCell>
                         <TableCell>{item.description}</TableCell>
                         <TableCell>{item.currentVersion}</TableCell>
                         <TableCell>{item.latestVersion}</TableCell>
@@ -73,7 +83,7 @@ const PackageUpdateView = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <Box>
               <Button variant="contained" color="primary" onClick={onSync}>
                 Sync
