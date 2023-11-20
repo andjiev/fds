@@ -1,8 +1,20 @@
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 
-const createConnection = (endpoint: string) => new HubConnectionBuilder()
-    .withUrl(`https://localhost:5001/${endpoint}`)
-    .withAutomaticReconnect()
-    .build();
+class FdsHubConnection {
+  private static instance: HubConnection;
 
-export { createConnection };
+  private constructor() { }
+
+  public static getInstance(endpoint: string): HubConnection {
+    if (!FdsHubConnection.instance) {
+      FdsHubConnection.instance = new HubConnectionBuilder()
+        .withUrl(`https://localhost:5001/${endpoint}`)
+        .withAutomaticReconnect()
+        .build();
+    }
+
+    return FdsHubConnection.instance;
+  }
+}
+
+export { FdsHubConnection };

@@ -2,7 +2,7 @@ import { lazy, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import withLazyLoad from '../lib/withLazyLoad';
 import { useAppDispatch } from '@/hooks';
-import { setupSignalRConnection } from '@/store/shared-store';
+import { startSignalRConnection, stopSignalRConnection } from '@/store/shared-store';
 
 const PackageUpdateView = lazy(() => import('../components/PackageUpdateView'));
 
@@ -10,7 +10,11 @@ const Router = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setupSignalRConnection());
+    dispatch(startSignalRConnection());
+
+    return () => {
+      dispatch(stopSignalRConnection());
+    }
   }, []);
 
   return (

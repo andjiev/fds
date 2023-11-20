@@ -6,7 +6,8 @@ import { getCultureFromStorage, setCultureToStorage } from './helpers/language-h
 import { initTranslations } from '../lib/translate';
 import { AppThunk } from '.';
 import { getTranslations } from '@/services/translation-service';
-import { createConnection } from '@/lib/signalr';
+import { FdsHubConnection } from '@/lib/signalr';
+import { toast } from 'react-toastify';
 
 export interface SharedStore {
   title: string;
@@ -59,24 +60,33 @@ export const changeCulture = (culture: string): AppThunk => async (dispatch, sto
   window.location.reload();
 };
 
-export const setupSignalRConnection = (): AppThunk => async (dispatch, store) => {
-  const connection = createConnection('hubs/package');
+export const startSignalRConnection = (): AppThunk => async (dispatch, store) => {
+  const connection = FdsHubConnection.getInstance('hubs/package')
   try {
     await connection.start();
 
     connection.on('packageUpdated', (result: Models.Package.Model) => {
       const packages = store().packageList.packages;
       dispatch(PackageStore.setPackages(packages.map(x => (x.id === result.id ? result : x))));
+      toast(`${result.name} updated`);
     });
 
     connection.on('syncPackages', (result: Models.Package.Model[]) => {
-      console.log('RESULT')
-      console.log(result);
       dispatch(PackageStore.setPackages(result));
+      toast('Packages synced');
     });
   } catch (err) {
     console.log(err);
   }
 };
+
+export const stopSignalRConnection = (): AppThunk => async (dispatch, store) => {
+  const connection = FdsHubConnection.getInstance('hubs/package')
+  try {
+    await connection.stop();
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 export default slice;

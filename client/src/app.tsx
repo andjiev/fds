@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { bootstrapApp } from './store/shared-store';
 import Loading from './components/Loading';
 import { onGetPackages } from './store/package-store';
+import { ToastContainer } from 'react-toastify';
 
 const Menu = lazy(() => import('./components/Menu'));
 
@@ -28,6 +29,7 @@ const App = () => {
             <Menu />
             <Box m={3}>
               <Router />
+              <ToastContainer position="bottom-right" />
             </Box>
           </Box>
         </Suspense>
