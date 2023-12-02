@@ -9,4 +9,9 @@ enum Status {
   UpToDate = 3
 }
 
-export { Environment, Status };
+enum Type {
+  Prod = 1,
+  Dev = 2
+}
+
+export { Environment, Status, Type };

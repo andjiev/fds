@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect } from 'react';
 
 import Router from './router';
-import { Box, Grid } from '@mui/material';
+import { Box, ThemeProvider, createTheme } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { bootstrapApp } from './store/shared-store';
 import Loading from './components/Loading';
@@ -21,17 +21,25 @@ const App = () => {
 
   const renderLoader = () => <Loading />;
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'light',
+    },
+  });
+
   return (
     <>
       {applicationBootstraped ? (
         <Suspense fallback={renderLoader()}>
-          <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
-            <Menu />
-            <Box m={3}>
-              <Router />
-              <ToastContainer position="bottom-right" />
+          <ThemeProvider theme={darkTheme}>
+            <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
+              <Menu />
+              <Box m={3}>
+                <Router />
+                <ToastContainer position="bottom-right" />
+              </Box>
             </Box>
-          </Box>
+          </ThemeProvider>
         </Suspense>
       ) : (
         renderLoader()
