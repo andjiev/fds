@@ -12,9 +12,8 @@ const StyledTextInput = styled(TextField)`
 
 const StyledDiv = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
     padding: 10px;
 `;
 

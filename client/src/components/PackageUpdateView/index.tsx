@@ -5,13 +5,13 @@ import { onUpdateAllPackages, onUpdatePackage, onSyncPackages } from '@/store/pa
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { translate } from '@/lib/translate';
-import { Status } from '@/lib/enums';
+import { Status, Type } from '@/lib/enums';
 import UpdateIcon from '@mui/icons-material/Update';
 import { setTitle } from '@/store/shared-store';
 import { ScoreBadge } from '../ScoreBadge';
 import Search from '../Search';
 import NpmImage from '../../assets/npm.png';
-import { Type } from '@/lib/enums';
+import { PackageType } from '../PackageType';
 
 const PackageUpdateView = () => {
   const dispatch = useAppDispatch();
@@ -86,7 +86,7 @@ const PackageUpdateView = () => {
                       </ScoreBadge>
                     </TableCell>
                     <TableCell>{item.description}</TableCell>
-                    <TableCell>{item.type === Type.Dev ? 'dev' : 'prod'}</TableCell>
+                    <TableCell><PackageType type={item.type}>{item.type === Type.Dev ? 'D' : 'P'}</PackageType></TableCell>
                     <TableCell>{item.currentVersion}</TableCell>
                     <TableCell>{item.latestVersion}</TableCell>
                     <TableCell align="center">

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { debounce } from '@mui/material/utils';
 import { StyledDiv, StyledTextInput } from './styles';
 import axios from 'axios';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import NpmImage from '../../assets/npm.png';
-import { Button } from '@mui/material';
+import { PackageType } from '../PackageType';
+import { Type } from '@/lib/enums';
 
 interface PackageResponse {
   name: string;
@@ -16,8 +16,9 @@ interface PackageResponse {
 }
 
 const Search = () => {
-  const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState<readonly PackageResponse[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState<readonly PackageResponse[]>([]);
+  const [open, setOpen] = useState(false);
 
   const fetch = useMemo(
     () =>
@@ -37,8 +38,6 @@ const Search = () => {
 
   useEffect(() => {
     let active = true;
-
-
     fetch({ input: inputValue }, (results?: readonly PackageResponse[]) => {
       if (active) {
         let newOptions: readonly PackageResponse[] = [];
@@ -57,10 +56,18 @@ const Search = () => {
     };
   }, [inputValue, fetch]);
 
+  const onSelected = (name: string, type: Type) => {
+    // alert(name + ' ' + type);
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 200);
+  };
+
   return (
     <Autocomplete
       id="search-bar"
-      sx={{ width: 400 }}
+      sx={{ width: 500 }}
       getOptionLabel={(option) =>
         typeof option === 'string' ? option : option.name
       }
@@ -70,13 +77,21 @@ const Search = () => {
       includeInputInList
       filterSelectedOptions
       noOptionsText="No packages"
-      disableCloseOnSelect
-      disableClearable
+      open={open}
+      // disableCloseOnSelect
+      // disableClearable
       // onChange={(event: any, newValue: PackageResponse | null) => {
       //   setOptions(newValue ? [newValue, ...options] : options);
       // }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
+        if (newInputValue && inputValue !== newInputValue) {
+          setTimeout(() => {
+            setOpen(true);
+          }, 200);
+        } else {
+          setOpen(false);
+        }
       }}
       renderInput={(params) => (
         <StyledTextInput {...params} label="Search new package" fullWidth />
@@ -84,24 +99,22 @@ const Search = () => {
       renderOption={(props, option) => {
         return (
           <StyledDiv>
-            <Grid container alignItems="center" sx={{ display: 'flex' }}>
-              <Grid item sx={{ display: 'flex', width: 44 }}>
+            <div style={{ display: 'flex' }}>
+              <div style={{ width: 44 }}>
                 <img src={NpmImage} width={30} />
-              </Grid>
-              <Grid item sx={{ wordWrap: 'break-word' }}>
-                <Typography variant="body2" color="text.secondary">
-                  {option.name}
-                </Typography>
-              </Grid>
-              <Grid item sx={{ display: 'flex', justifyContent: 'in' }}>
-                <Typography variant="body2" color="text.secondary">
-                  prod
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  dev
-                </Typography>
-              </Grid>
-            </Grid>
+              </div>
+              <Typography variant="body2" color="text.secondary">
+                {option.name}  <b>{option.version}</b>
+              </Typography>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} component={'span'} onClick={() => onSelected(option.name, Type.Prod)}>
+                <PackageType type={Type.Prod}>P</PackageType>
+              </Typography>
+              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} ml={1} onClick={() => onSelected(option.name, Type.Dev)}>
+                <PackageType type={Type.Dev}>D</PackageType>
+              </Typography>
+            </div>
           </StyledDiv>
         );
       }}
