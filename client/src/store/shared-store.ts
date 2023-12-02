@@ -75,6 +75,12 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
       dispatch(PackageStore.setPackages(result));
       toast('Packages synced');
     });
+
+    connection.on('packageInstalled', (result: Models.Package.Model) => {
+      const packages = store().packageList.packages;
+      dispatch(PackageStore.setPackages([...packages, result]));
+      toast(`${result.name} installed`);
+    });
   } catch (err) {
     console.log(err);
   }

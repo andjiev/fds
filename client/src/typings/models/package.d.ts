@@ -11,4 +11,11 @@ declare module Models.Package {
     updatedOn: Date;
     type: Enums.Type;
   }
+
+  export interface Create {
+    name: string;
+    version: string;
+    description: string;
+    type: Enums.Type;
+  }
 }

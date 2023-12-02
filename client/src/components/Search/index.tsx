@@ -8,6 +8,8 @@ import { useEffect, useMemo, useState } from 'react';
 import NpmImage from '../../assets/npm.png';
 import { PackageType } from '../PackageType';
 import { Type } from '@/lib/enums';
+import { useAppDispatch } from '@/hooks';
+import { onCreatePackage } from '@/store/package-store';
 
 interface PackageResponse {
   name: string;
@@ -19,6 +21,7 @@ const Search = () => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<readonly PackageResponse[]>([]);
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   const fetch = useMemo(
     () =>
@@ -38,6 +41,8 @@ const Search = () => {
 
   useEffect(() => {
     let active = true;
+    if(!inputValue) return setOptions([]);
+
     fetch({ input: inputValue }, (results?: readonly PackageResponse[]) => {
       if (active) {
         let newOptions: readonly PackageResponse[] = [];
@@ -55,8 +60,8 @@ const Search = () => {
     };
   }, [inputValue, fetch]);
 
-  const onSelected = (name: string, type: Type) => {
-    // alert(name + ' ' + type);
+  const onSelected = (option: PackageResponse, type: Type) => {
+    dispatch(onCreatePackage(option.name, option.description, option.version, type));
 
     setTimeout(() => {
       setOpen(false);
@@ -77,11 +82,6 @@ const Search = () => {
       filterSelectedOptions
       noOptionsText="No packages"
       open={open}
-      // disableCloseOnSelect
-      // disableClearable
-      // onChange={(event: any, newValue: PackageResponse | null) => {
-      //   setOptions(newValue ? [newValue, ...options] : options);
-      // }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
         if (newInputValue && inputValue !== newInputValue) {
@@ -107,10 +107,10 @@ const Search = () => {
               </Typography>
             </div>
             <div style={{ display: 'flex' }}>
-              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} component={'span'} onClick={() => onSelected(option.name, Type.Prod)}>
+              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} component={'span'} onClick={() => onSelected(option, Type.Prod)}>
                 <PackageType type={Type.Prod}>P</PackageType>
               </Typography>
-              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} ml={1} onClick={() => onSelected(option.name, Type.Dev)}>
+              <Typography variant="body2" color="text.secondary" style={{ cursor: 'pointer' }} ml={1} onClick={() => onSelected(option, Type.Dev)}>
                 <PackageType type={Type.Dev}>D</PackageType>
               </Typography>
             </div>

@@ -8,12 +8,12 @@ import { translate } from '@/lib/translate';
 import { Status, Type } from '@/lib/enums';
 import UpdateIcon from '@mui/icons-material/Update';
 import { setTitle } from '@/store/shared-store';
-import { ScoreBadge } from '../ScoreBadge';
-import Search from '../Search';
+import { ScoreBadge } from '../../components/ScoreBadge';
+import Search from '../../components/Search';
 import NpmImage from '../../assets/npm.png';
-import { PackageType } from '../PackageType';
+import { PackageType } from '../../components/PackageType';
 
-const PackageUpdateView = () => {
+const PackageView = () => {
   const dispatch = useAppDispatch();
   const packages = useAppSelector(state => state.packageList.packages);
 
@@ -111,4 +111,4 @@ const PackageUpdateView = () => {
   );
 };
 
-export default PackageUpdateView;
+export default PackageView;

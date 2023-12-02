@@ -4,7 +4,7 @@ import withLazyLoad from '../lib/withLazyLoad';
 import { useAppDispatch } from '@/hooks';
 import { startSignalRConnection, stopSignalRConnection } from '@/store/shared-store';
 
-const PackageUpdateView = lazy(() => import('../components/PackageUpdateView'));
+const PackageView = lazy(() => import('../pages/PackageView'));
 
 const Router = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ const Router = () => {
 
   return (
     <Routes>
-      <Route index Component={withLazyLoad(PackageUpdateView)} />
+      <Route index Component={withLazyLoad(PackageView)} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
