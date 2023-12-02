@@ -12,7 +12,8 @@
         {
             services
                 .AddTransient<PackageUpdatedConsumer>()
-                .AddTransient<SyncPackagesCompletedConsumer>();
+                .AddTransient<SyncPackagesCompletedConsumer>()
+                .AddTransient<PackageInstalledConsumer>();
 
             services.AddMassTransit(x =>
             {
@@ -31,6 +32,11 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "SyncPackagesCompleted"), e =>
                     {
                         e.Consumer<SyncPackagesCompletedConsumer>(context);
+                    });
+                    
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "PackageInstalled"), e =>
+                    {
+                        e.Consumer<PackageInstalledConsumer>(context);
                     });
                 });
             });

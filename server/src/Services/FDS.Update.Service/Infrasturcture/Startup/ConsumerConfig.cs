@@ -14,7 +14,8 @@
         {
             services
                  .AddTransient<StartUpdateConsumer>()
-                 .AddTransient<SyncPackagesConsumer>();
+                 .AddTransient<SyncPackagesConsumer>()
+                 .AddTransient<InstallPackageConsumer>();
 
             services.AddMassTransit(x =>
             {
@@ -22,7 +23,7 @@
                 {
                     var config = context.GetService<IRabbitMQConfiguration>();
 
-                    if(environment.IsDevelopment())
+                    if (environment.IsDevelopment())
                     {
                         cfg.Host(config.RabbitMQAddress, 5672, config.RabbitMQVHost, h =>
                         {
@@ -52,6 +53,12 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "SyncPackages"), e =>
                     {
                         e.Consumer<SyncPackagesConsumer>(context);
+                        e.PrefetchCount = 1;
+                    });
+
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "InstallPackage"), e =>
+                    {
+                        e.Consumer<InstallPackageConsumer>(context);
                         e.PrefetchCount = 1;
                     });
                 });

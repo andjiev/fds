@@ -33,7 +33,29 @@
                 Status = PackageStatus.UpToDate
             });
         }
-        
+
+        public async Task<int> InsertPackageAsync(Entities.Package package)
+        {
+            var sql = @"
+                    INSERT INTO [Package]
+                    (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description, Type)
+                    VALUES
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type);
+                    SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            return await dbConnection.QuerySingleAsync<int>(sql, new
+            {
+                Name = package.Name,
+                CurrentVersion = package.CurrentVersion,
+                LatestVersion = package.LatestVersion,
+                Status = package.Status,
+                Score = package.Score,
+                Url = package.Url,
+                Description = package.Description,
+                Type = package.Type
+            });
+        }
+
         public async Task InsertPackagesAsync(List<Entities.Package> packages)
         {
             await dbConnection.ExecuteAsync("DELETE FROM Package");
@@ -59,7 +81,7 @@
                 });
             }
         }
-        
+
         public async Task ResetStatusAsync(int packageId)
         {
             string query = @"

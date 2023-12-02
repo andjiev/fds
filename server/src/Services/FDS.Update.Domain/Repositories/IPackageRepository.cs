@@ -8,6 +8,8 @@
     {
         Task UpdatePackageVersionAsync(int packageId, string packageVersion);
 
+        Task<int> InsertPackageAsync(Entities.Package package);
+
         Task InsertPackagesAsync(List<Entities.Package> packages);
 
         Task ResetStatusAsync(int packageId);

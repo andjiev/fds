@@ -26,6 +26,13 @@
             return Ok(packages);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Models.Package>> AddPackage(Models.PackageToAdd package)
+        {
+            await mediator.Send(new CreatePackageCommand(package.Name, package.Description, package.Version, package.Type));
+            return Ok();
+        }
+
         [HttpPut("sync")]
         public async Task<ActionResult> InitializePackages()
         {

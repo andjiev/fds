@@ -42,7 +42,6 @@ const Search = () => {
       if (active) {
         let newOptions: readonly PackageResponse[] = [];
 
-
         if (results) {
           newOptions = [...newOptions, ...results];
         }
