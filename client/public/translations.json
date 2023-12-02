@@ -1,7 +1,7 @@
 {
     "mk-MK": {
       "translation": {
-        "Page_Title_Packages": "Update",
+        "Page_Title_Packages": "Packages",
         "Page_Title_Versions": "Versions",
         "FDS_Package_Bluetooth": "Bluetooth",
         "FDS_Package_Noise_Cancelling": "Noise Cancelling",
@@ -10,7 +10,7 @@
     },
     "en-GB": {
       "translation": {
-        "Page_Title_Packages": "Update",
+        "Page_Title_Packages": "Packages",
         "Page_Title_Versions": "Versions",
         "FDS_Package_Bluetooth": "Bluetooth",
         "FDS_Package_Noise_Cancelling": "Noise Cancelling",

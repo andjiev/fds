@@ -9,8 +9,7 @@
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services
-                .AddTransient<IPackageRepository, PackageRepository>()
-                .AddTransient<IVersionRepository, VersionRepository>();
+                .AddTransient<IPackageRepository, PackageRepository>();
 
             return services;
         }

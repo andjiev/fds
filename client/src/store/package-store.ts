@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import * as PackageService from '../services/package-service';
-import * as VersionService from '../services/version-service';
 import { AppThunk } from '.';
 
 export interface PackageUpdateStore {
@@ -41,9 +40,9 @@ export const onGetPackages = (): AppThunk => async (dispatch, store) => {
   }
 };
 
-export const onUpdatePackage = (packageId: number, versionId: number): AppThunk => async (dispatch, store) => {
+export const onUpdatePackage = (packageId: number): AppThunk => async (dispatch, store) => {
   try {
-    const result = await PackageService.updatePackage(packageId, versionId);
+    const result = await PackageService.updatePackage(packageId);
     if (result.data) {
       dispatch(setPackage(result.data));
     }
@@ -63,9 +62,9 @@ export const onUpdateAllPackages = (): AppThunk => async (dispatch, store) => {
   }
 };
 
-export const onResetPackages = (): AppThunk => async (dispatch, store) => {
+export const onSyncPackages = (): AppThunk => async (dispatch, store) => {
   try {
-    const result = await PackageService.resetPackages();
+    const result = await PackageService.syncPackages();
     if (result.data) {
       dispatch(setPackages(result.data));
     }
@@ -73,16 +72,5 @@ export const onResetPackages = (): AppThunk => async (dispatch, store) => {
     console.log(err);
   }
 };
-
-export const onCreatePackageVersion = (packageId: number, versionNumber: string): AppThunk => async (dispatch, store) => {
-  try {
-    const result = await VersionService.createVersion(packageId, versionNumber);
-    if(result.data) {
-      dispatch(setPackage(result.data));
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 export default slice;

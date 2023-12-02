@@ -2,8 +2,13 @@ declare module Models.Package {
   export interface Model {
     id: number;
     name: string;
+    currentVersion: string;
+    latestVersion: string;
+    score?: number;
+    url: string;
+    description: string;
     status: Enums.Status;
-    version: Models.Version.Model;
-    versionUpdate?: Models.Version.SimplifiedModel;
+    updatedOn: Date;
+    type: Enums.Type;
   }
 }

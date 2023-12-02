@@ -1,9 +1,17 @@
 ﻿namespace FDS.Update.Domain.Repositories
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Entities = FDS.Common.Entities;
 
     public interface IPackageRepository
     {
-        Task UpdatePackageVersionAsync(int packageId, int versionId);
+        Task UpdatePackageVersionAsync(int packageId, string packageVersion);
+
+        Task<int> InsertPackageAsync(Entities.Package package);
+
+        Task InsertPackagesAsync(List<Entities.Package> packages);
+
+        Task ResetStatusAsync(int packageId);
     }
 }

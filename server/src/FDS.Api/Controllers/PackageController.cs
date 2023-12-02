@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Models = Package.Service.Models;
+    using Models = FDS.Common.Models;
 
     [Route("api/packages")]
     [ApiController]
@@ -26,10 +26,24 @@
             return Ok(packages);
         }
 
-        [HttpPut("{packageId:int}")]
-        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId, [FromBody]Models.UpdatePackage model)
+        [HttpPost]
+        public async Task<ActionResult<Models.Package>> AddPackage(Models.PackageToAdd package)
         {
-            var package = await mediator.Send(new UpdatePackageVersionCommand(packageId, model.VersionId));
+            await mediator.Send(new CreatePackageCommand(package.Name, package.Description, package.Version, package.Type));
+            return Ok();
+        }
+
+        [HttpPut("sync")]
+        public async Task<ActionResult> InitializePackages()
+        {
+            await mediator.Send(new SyncPackagesCommand());
+            return Ok();
+        }
+
+        [HttpPut("{packageId:int}")]
+        public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId)
+        {
+            var package = await mediator.Send(new UpdatePackageCommand(packageId));
             return Ok(package);
         }
 
@@ -37,13 +51,6 @@
         public async Task<ActionResult<List<Models.Package>>> UpdateAllPackages()
         {
             var packages = await mediator.Send(new UpdateAllPackagesCommand());
-            return Ok(packages);
-        }
-
-        [HttpPut("reset")]
-        public async Task<ActionResult<List<Models.Package>>> UpdatePackagesToInitialState()
-        {
-            var packages = await mediator.Send(new UpdatePackagesToInitialStateCommand());
             return Ok(packages);
         }
     }

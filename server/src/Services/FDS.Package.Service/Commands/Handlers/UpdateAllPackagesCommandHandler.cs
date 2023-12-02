@@ -12,6 +12,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Models = FDS.Common.Models;
 
     public class UpdateAllPackagesCommandHandler : IRequestHandler<UpdateAllPackagesCommand, List<Models.Package>>
     {
@@ -35,22 +36,19 @@
 
             foreach(var package in packages)
             {
-                if(package.Status == PackageStatus.Initial)
+                if(package.Status == PackageStatus.UpdateNeeded)
                 {
                     package.UpdateStatus(PackageStatus.Updating);
                     await repository.UpdatePackageAsync(package);
-                    await StartPackageUpdate(package.Id, package.VersionUpdate.Id, cancellationToken);
+                    await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
                 }
-                packagesToReturn.Add(mapper.Map<Models.Package>(package, opt =>
-                {
-                    opt.AfterMap((src, dest) => dest.VersionUpdate = null);
-                }));
+                packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
 
             return packagesToReturn;
         }
 
-        private async Task StartPackageUpdate(int packageId, int versionId, CancellationToken cancellationToken)
+        private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
@@ -61,7 +59,8 @@
             {
                 CorrelationId = correlation,
                 PackageId = packageId,
-                VersionId = versionId
+                PackageName = packageName,
+                PackageVersion = packageVersion
             }, cancellationToken: cancellationToken);
         }
     }

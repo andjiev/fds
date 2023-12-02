@@ -4,9 +4,14 @@ enum Environment {
 }
 
 enum Status {
-  Initial = 1,
+  UpdateNeeded = 1,
   Updating = 2,
-  Updated = 3
+  UpToDate = 3
 }
 
-export { Environment, Status };
+enum Type {
+  Prod = 1,
+  Dev = 2
+}
+
+export { Environment, Status, Type };

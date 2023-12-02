@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.SignalR;
     using System;
     using System.Threading.Tasks;
+    using Models = FDS.Common.Models;
 
     public class PackageUpdatedConsumer : IConsumer<IPackageUpdated>
     {

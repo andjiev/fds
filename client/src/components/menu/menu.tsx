@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { changeCulture } from '../../store/shared-store';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 

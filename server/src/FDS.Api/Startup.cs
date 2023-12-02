@@ -27,7 +27,7 @@ namespace FDS.Api
             services.AddControllers();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddAutoMapper(typeof(Package.Domain.Profiles.PackageProfile), typeof(Package.Service.Profiles.PackageProfile));
+            services.AddAutoMapper(typeof(Package.Domain.Profiles.PackageProfile), typeof(FDS.Common.Profiles.PackageProfile));
             services.AddSwaggerServices();
 
             services.AddCors();

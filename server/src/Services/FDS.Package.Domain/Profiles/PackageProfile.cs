@@ -2,13 +2,13 @@
 {
     using AutoMapper;
     using FDS.Common.Interfaces;
+    using Entities = FDS.Common.Entities;
 
     public class PackageProfile : Profile, IProfile
     {
         public PackageProfile()
         {
-            CreateMap<DbResults.PackageDbResult, Entities.Package>()
-                .ForMember(x => x.Version, x => x.MapFrom(z => new Entities.Version(z.VersionId, z.VersionName)));
+            CreateMap<DbResults.PackageDbResult, Entities.Package>();
         }
     }
 }
