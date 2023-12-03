@@ -6,7 +6,7 @@
 
     public interface IPackageRepository
     {
-        Task<List<Entities.Package>> GetAsync();
+        Task<List<Entities.Package>> GetAsync(List<int> ids = null);
 
         Task<Entities.Package> GetPackageAsync(int packageId);
 

@@ -82,6 +82,19 @@
             }
         }
 
+        public async Task DeletePackageAsync(int id)
+        {
+            string query = @"
+                        DELETE
+                        FROM Package
+                        WHERE Package.Id = @Id";
+
+            await dbConnection.ExecuteAsync(query, new
+            {
+                Id = id
+            });
+        }
+
         public async Task ResetStatusAsync(int packageId)
         {
             string query = @"

@@ -14,14 +14,14 @@
     using System.Threading.Tasks;
     using Models = FDS.Common.Models;
 
-    public class UpdateAllPackagesCommandHandler : IRequestHandler<UpdateAllPackagesCommand, List<Models.Package>>
+    public class DeleteSelectedPackagesCommandHandler : IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
 
-        public UpdateAllPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
+        public DeleteSelectedPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
         {
             this.bus = bus;
             this.configuration = configuration;
@@ -29,38 +29,34 @@
             this.mapper = mapper;
         }
 
-        public async Task<List<Models.Package>> Handle(UpdateAllPackagesCommand request, CancellationToken cancellationToken)
+        public async Task<List<Models.Package>> Handle(DeleteSelectedPackagesCommand request, CancellationToken cancellationToken)
         {
-            var packages = await repository.GetAsync();
+            var packages = await repository.GetAsync(request.PackageIds);
             var packagesToReturn = new List<Models.Package>();
 
-            foreach(var package in packages)
+            foreach (var package in packages)
             {
-                if(package.Status == PackageStatus.UpdateNeeded)
-                {
-                    package.UpdateStatus(PackageStatus.Updating);
-                    await repository.UpdatePackageAsync(package);
-                    await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
-                }
+                package.UpdateStatus(PackageStatus.Loading);
+                await repository.UpdatePackageAsync(package);
+                await StartPackageDelete(package.Id, package.Name, cancellationToken);
                 packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
 
             return packagesToReturn;
         }
 
-        private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)
+        private async Task StartPackageDelete(int packageId, string packageName, CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
-                .GetSendEndpoint(configuration.GetEndpointUrl(bus.Address, "StartUpdate"))
+                .GetSendEndpoint(configuration.GetEndpointUrl(bus.Address, "StartDelete"))
                 .ConfigureAwait(false);
 
-            await endpoint.Send<IStartUpdate>(new
+            await endpoint.Send<IStartDelete>(new
             {
                 CorrelationId = correlation,
                 PackageId = packageId,
                 PackageName = packageName,
-                PackageVersion = packageVersion
             }, cancellationToken: cancellationToken);
         }
     }

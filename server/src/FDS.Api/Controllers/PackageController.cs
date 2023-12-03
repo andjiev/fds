@@ -33,13 +33,6 @@
             return Ok();
         }
 
-        [HttpPut("sync")]
-        public async Task<ActionResult> SyncPackages()
-        {
-            await mediator.Send(new SyncPackagesCommand());
-            return Ok();
-        }
-
         [HttpPut("{packageId:int}")]
         public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId)
         {
@@ -47,10 +40,24 @@
             return Ok(package);
         }
 
-        [HttpPut("updateAll")]
-        public async Task<ActionResult<List<Models.Package>>> UpdateAllPackages()
+        [HttpPut("sync")]
+        public async Task<ActionResult> SyncPackages()
         {
-            var packages = await mediator.Send(new UpdateAllPackagesCommand());
+            await mediator.Send(new SyncPackagesCommand());
+            return Ok();
+        }
+
+        [HttpPut("updateSelected")]
+        public async Task<ActionResult<List<Models.Package>>> UpdateSelectedPackages(List<int> packageIds)
+        {
+            var packages = await mediator.Send(new UpdateSelectedPackagesCommand(packageIds));
+            return Ok(packages);
+        }
+
+        [HttpPut("deleteSelected")]
+        public async Task<ActionResult<List<Models.Package>>> DeleteSelectedPackages(List<int> packageIds)
+        {
+            var packages = await mediator.Send(new DeleteSelectedPackagesCommand(packageIds));
             return Ok(packages);
         }
     }

@@ -23,7 +23,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<List<Entities.Package>> GetAsync()
+        public async Task<List<Entities.Package>> GetAsync(List<int> ids = null)
         {
             string packageQuery = @"
                         SELECT
@@ -39,7 +39,16 @@
                             Package.Type AS Type
                         FROM Package";
 
-            var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery)).AsList();
+            if (ids != null && ids.Any())
+            {
+                packageQuery += " WHERE Package.Id IN @Ids";
+            }
+
+            var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery, new
+            {
+                Ids = ids
+            })).AsList();
+
             return mapper.Map<List<Entities.Package>>(result);
         }
 

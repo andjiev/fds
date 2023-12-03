@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Switch, FormControlLabel, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { onUpdateAllPackages, onUpdatePackage, onSyncPackages } from '@/store/package-store';
+import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onSyncPackages } from '@/store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { translate } from '@/lib/translate';
@@ -32,8 +32,16 @@ const PackageView = () => {
     dispatch(onUpdatePackage(packageId));
   }
 
-  const onUpdateAll = () => {
-    dispatch(onUpdateAllPackages());
+  const onUpdateSelected = () => {
+    dispatch(onUpdateSelectedPackages(selected));
+    setSelected([]);
+    setAction('single');
+  }
+
+  const onDeleteSelected = () => {
+    dispatch(onDeleteSelectedPackages(selected));
+    setSelected([]);
+    setAction('single');
   }
 
   const onSync = () => {
@@ -51,7 +59,7 @@ const PackageView = () => {
       }} />;
     }
 
-    if(action === 'multi-update' && item.status === Status.UpdateNeeded) {
+    if (action === 'multi-update' && item.status === Status.UpdateNeeded) {
       return <Checkbox size="small" onChange={(checked) => {
         if (checked) {
           setSelected([...selected, item.id]);
@@ -103,12 +111,12 @@ const PackageView = () => {
             </ToggleButtonGroup>
           </Box>
           <Box ml={2}>
-            <Button variant="contained" color="success" onClick={onUpdateAll} disabled={!selected.length || action === 'multi-delete'}>
+            <Button variant="contained" color="success" onClick={onUpdateSelected} disabled={!selected.length || action === 'multi-delete'}>
               Update({action === 'multi-update' ? selected.length : 0})
             </Button>
           </Box>
           <Box ml={2}>
-            <Button variant="contained" color="error" onClick={() => { }} disabled={!selected.length || action === 'multi-update'}>
+            <Button variant="contained" color="error" onClick={onDeleteSelected} disabled={!selected.length || action === 'multi-update'}>
               Delete({action === 'multi-delete' ? selected.length : 0})
             </Button>
           </Box>

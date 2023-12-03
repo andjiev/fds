@@ -81,6 +81,12 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
       dispatch(PackageStore.setPackages([...packages, result]));
       toast(`${result.name} installed`);
     });
+
+    connection.on('packageDeleted', (id: number, name: string) => {
+      const packages = store().packageList.packages;
+      dispatch(PackageStore.setPackages(packages.filter(x => x.id !== id)));
+      toast(`${name} deleted`);
+    });
   } catch (err) {
     console.log(err);
   }

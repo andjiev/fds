@@ -13,12 +13,16 @@ const updatePackage = async (packageId: number): Promise<AxiosResponse<Models.Pa
   return httpService.put<Models.Package.Model>(`/api/packages/${packageId}`);
 };
 
-const updateAllPackages = async (): Promise<AxiosResponse<Models.Package.Model[]>> => {
-  return httpService.put<Models.Package.Model[]>(`/api/packages/updateAll`);
+const updateSelected = async (ids: number[]): Promise<AxiosResponse<Models.Package.Model[]>> => {
+  return httpService.put<Models.Package.Model[]>(`/api/packages/updateSelected`, ids);
+};
+
+const deleteSelected = async (ids: number[]): Promise<AxiosResponse<Models.Package.Model[]>> => {
+  return httpService.put<Models.Package.Model[]>(`/api/packages/deleteSelected`, ids);
 };
 
 const syncPackages = async (): Promise<AxiosResponse> => {
   return httpService.put(`/api/packages/sync`);
 };
 
-export { getPackages, createPackage, updatePackage, updateAllPackages, syncPackages };
+export { getPackages, createPackage, updatePackage, updateSelected, deleteSelected, syncPackages };

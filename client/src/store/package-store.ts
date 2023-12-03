@@ -21,11 +21,14 @@ const slice = createSlice({
     },
     setPackage: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model>) => {
       state.packages = state.packages.map(x => (x.id === action.payload.id ? action.payload : x));
+    },
+    setModifiedPackages: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model[]>) => {
+      state.packages = state.packages.map(x => action.payload.find(a => x.id === a.id) || x);
     }
   }
 });
 
-export const { setPackages, setPackage } = slice.actions;
+export const { setPackages, setPackage, setModifiedPackages } = slice.actions;
 
 export const reducer = slice.reducer;
 
@@ -72,11 +75,22 @@ export const onUpdatePackage = (packageId: number): AppThunk => async (dispatch,
   }
 };
 
-export const onUpdateAllPackages = (): AppThunk => async (dispatch, store) => {
+export const onUpdateSelectedPackages = (ids: number[]): AppThunk => async (dispatch, store) => {
   try {
-    const result = await PackageService.updateAllPackages();
+    const result = await PackageService.updateSelected(ids);
     if (result.data) {
-      dispatch(setPackages(result.data));
+      dispatch(setModifiedPackages(result.data));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const onDeleteSelectedPackages = (ids: number[]): AppThunk => async (dispatch, store) => {
+  try {
+    const result = await PackageService.deleteSelected(ids);
+    if (result.data) {
+      dispatch(setModifiedPackages(result.data));
     }
   } catch (err) {
     console.log(err);

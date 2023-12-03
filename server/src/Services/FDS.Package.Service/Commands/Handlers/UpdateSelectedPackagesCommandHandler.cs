@@ -9,18 +9,19 @@
     using MassTransit;
     using MediatR;
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Models = FDS.Common.Models;
 
-    public class UpdatePackageCommandHandler : IRequestHandler<UpdatePackageCommand, Models.Package>
+    public class UpdateSelectedPackagesCommandHandler : IRequestHandler<UpdateSelectedPackagesCommand, List<Models.Package>>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
 
-        public UpdatePackageCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
+        public UpdateSelectedPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
         {
             this.bus = bus;
             this.configuration = configuration;
@@ -28,19 +29,23 @@
             this.mapper = mapper;
         }
 
-        public async Task<Models.Package> Handle(UpdatePackageCommand request, CancellationToken cancellationToken)
+        public async Task<List<Models.Package>> Handle(UpdateSelectedPackagesCommand request, CancellationToken cancellationToken)
         {
-            var package = await repository.GetPackageAsync(request.PackageId);
-            if (package == null)
+            var packages = await repository.GetAsync(request.PackageIds);
+            var packagesToReturn = new List<Models.Package>();
+
+            foreach(var package in packages)
             {
-                throw new ArgumentNullException("Package id is not valid");
+                if(package.Status == PackageStatus.UpdateNeeded)
+                {
+                    package.UpdateStatus(PackageStatus.Loading);
+                    await repository.UpdatePackageAsync(package);
+                    await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
+                }
+                packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
 
-            package.UpdateStatus(PackageStatus.Loading);
-
-            await repository.UpdatePackageAsync(package);
-            await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
-            return mapper.Map<Models.Package>(package);
+            return packagesToReturn;
         }
 
         private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)
@@ -55,7 +60,7 @@
                 CorrelationId = correlation,
                 PackageId = packageId,
                 PackageName = packageName,
-                PackageVersion = packageVersion,
+                PackageVersion = packageVersion
             }, cancellationToken: cancellationToken);
         }
     }

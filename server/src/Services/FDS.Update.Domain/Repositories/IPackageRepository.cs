@@ -12,6 +12,9 @@
 
         Task InsertPackagesAsync(List<Entities.Package> packages);
 
+        Task DeletePackageAsync(int id);
+
         Task ResetStatusAsync(int packageId);
+
     }
 }

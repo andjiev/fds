@@ -15,7 +15,8 @@
             services
                  .AddTransient<StartUpdateConsumer>()
                  .AddTransient<SyncPackagesConsumer>()
-                 .AddTransient<InstallPackageConsumer>();
+                 .AddTransient<InstallPackageConsumer>()
+                 .AddTransient<StartDeleteConsumer>();
 
             services.AddMassTransit(x =>
             {
@@ -59,6 +60,12 @@
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "InstallPackage"), e =>
                     {
                         e.Consumer<InstallPackageConsumer>(context);
+                        e.PrefetchCount = 1;
+                    });
+
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "StartDelete"), e =>
+                    {
+                        e.Consumer<StartDeleteConsumer>(context);
                         e.PrefetchCount = 1;
                     });
                 });
