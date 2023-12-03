@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect } from 'react';
 
 import Router from './router';
-import { Box, ThemeProvider, createTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { bootstrapApp } from './store/shared-store';
 import Loading from './components/Loading';

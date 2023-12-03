@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button } from '@mui/material';
+import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Switch, FormControlLabel, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { onUpdateAllPackages, onUpdatePackage, onSyncPackages } from '@/store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -12,10 +12,17 @@ import { ScoreBadge } from '../../components/ScoreBadge';
 import Search from '../../components/Search';
 import NpmImage from '../../assets/npm.png';
 import { PackageType } from '../../components/PackageType';
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+
+type ActionType = 'single' | 'multi-update' | 'multi-delete';
 
 const PackageView = () => {
   const dispatch = useAppDispatch();
   const packages = useAppSelector(state => state.packageList.packages);
+  const [action, setAction] = useState<ActionType>('single');
+  const [selected, setSelected] = useState<number[]>([]);
 
   useEffect(() => {
     dispatch(setTitle(translate('Page_Title_Packages', 'Packages')));
@@ -33,6 +40,40 @@ const PackageView = () => {
     dispatch(onSyncPackages());
   }
 
+  const renderActionCell = (item: Models.Package.Model) => {
+    if (action === 'multi-delete') {
+      return <Checkbox size="small" onChange={(checked) => {
+        if (checked) {
+          setSelected([...selected, item.id]);
+        } else {
+          setSelected(selected.filter(x => x !== item.id));
+        }
+      }} />;
+    }
+
+    if(action === 'multi-update' && item.status === Status.UpdateNeeded) {
+      return <Checkbox size="small" onChange={(checked) => {
+        if (checked) {
+          setSelected([...selected, item.id]);
+        } else {
+          setSelected(selected.filter(x => x !== item.id));
+        }
+      }} />;
+    }
+
+    if (item.status === Status.UpdateNeeded) {
+      return <IconButton size="small" onClick={() => onUpdate(item.id)}>
+        <UpdateIcon />
+      </IconButton>;
+    }
+
+    if (item.status === Status.UpToDate) {
+      return '';
+    }
+
+    return <CircularProgress size="20px" />;
+  }
+
   return (
     <Box mt={5}>
       <Grid item display={'flex'} alignItems={'center'} justifyContent={'space-between'} width={'100%'} mt={4}>
@@ -41,13 +82,39 @@ const PackageView = () => {
         </Box>
         <Grid item display={'flex'} alignItems={'center'}>
           <Box ml={2}>
-            <Button variant="contained" color="primary" onClick={onSync}>
-              Sync
+            <ToggleButtonGroup
+              value={action}
+              exclusive
+              onChange={(_, value) => {
+                value ? setAction(value) : setAction('single');
+                setSelected([]);
+              }}
+              aria-label="text alignment"
+            >
+              <ToggleButton value="single" aria-label="single">
+                <RadioButtonUncheckedIcon />
+              </ToggleButton>
+              <ToggleButton value="multi-update" aria-label="multi update">
+                <PlaylistAddCheckIcon />
+              </ToggleButton>
+              <ToggleButton value="multi-delete" aria-label="multi deleete">
+                <AutoDeleteIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+          <Box ml={2}>
+            <Button variant="contained" color="success" onClick={onUpdateAll} disabled={!selected.length || action === 'multi-delete'}>
+              Update({action === 'multi-update' ? selected.length : 0})
             </Button>
           </Box>
           <Box ml={2}>
-            <Button variant="contained" color="secondary" onClick={onUpdateAll}>
-              Update all
+            <Button variant="contained" color="error" onClick={() => { }} disabled={!selected.length || action === 'multi-update'}>
+              Delete({action === 'multi-delete' ? selected.length : 0})
+            </Button>
+          </Box>
+          <Box ml={2}>
+            <Button variant="contained" color="primary" onClick={onSync}>
+              Sync
             </Button>
           </Box>
         </Grid>
@@ -90,15 +157,7 @@ const PackageView = () => {
                     <TableCell>{item.currentVersion}</TableCell>
                     <TableCell>{item.latestVersion}</TableCell>
                     <TableCell align="center">
-                      {item.status === Status.UpdateNeeded ? (
-                        <IconButton size="small" onClick={() => onUpdate(item.id)}>
-                          <UpdateIcon />
-                        </IconButton>
-                      ) : item.status === Status.UpToDate ? (
-                        ''
-                      ) : (
-                        <CircularProgress size="20px" />
-                      )}
+                      {renderActionCell(item)}
                     </TableCell>
                   </TableRow>
                 );
