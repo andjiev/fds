@@ -32,8 +32,8 @@ namespace FDS.Update.Service.Consumers
         {
             try
             {
-
-                using FileStream stream = File.OpenRead("../../../../package.json");
+                // using FileStream stream = File.OpenRead("../../../../package.json");
+                using FileStream stream = File.OpenRead("../appdata/package.json");
                 Models.PackageJson packageJson = await JsonSerializer.DeserializeAsync<Models.PackageJson>(stream);
                 var httpClient = new HttpClient();
                 var packages = new List<Models.Package>();
@@ -60,7 +60,7 @@ namespace FDS.Update.Service.Consumers
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occured while synchronizing packages");
+                throw new Exception("Error occured while synchronizing packages" + ex.Message);
             }
         }
 

@@ -31,34 +31,37 @@ services:
       - "15672:15672"
       - "25672:25672"
 
-  # api:
-  #   container_name: fds-api
-  #   build:
-  #     context: .
-  #     dockerfile: src/FDS.Api/Dockerfile
-  #   environment:
-  #     - "ASPNETCORE_ENVIRONMENT=Development"
-  #     - "ASPNETCORE_URLS=http://+:6401"
-  #     - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
-  #     - "RabbitMQ__Address=rabbitmq"
-  #   depends_on:
-  #     - mssql
-  #     - rabbitmq
-  #   ports:
-  #     - 6401:80
+  api:
+    container_name: fds-api
+    build:
+      context: .
+      dockerfile: ./server/src/FDS.Api/Dockerfile
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://+:6401"
+      - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
+      - "RabbitMQ__Address=rabbitmq"
+    depends_on:
+      - mssql
+      - rabbitmq
+    ports:
+      - 6401:6401
 
-  # update:
-  #   container_name: fds-update
-  #   build:
-  #     context: .
-  #     dockerfile: ./src/Services/FDS.Update.Service/Dockerfile
-  #   environment:
-  #     - "ASPNETCORE_ENVIRONMENT=Development"
-  #     - "ASPNETCORE_URLS=http://+:6501"
-  #     - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
-  #     - "RabbitMQ__Address=rabbitmq"
-  #   depends_on:
-  #     - mssql
-  #     - rabbitmq
-  #   ports:
-  #     - 6501:80
+  worker:
+    container_name: fds-worker
+    build:
+      context: .
+      dockerfile: ./server/src/Services/FDS.Update.Service/Dockerfile
+    volumes:
+      - ./package.json:/appdata/package.json
+      # - /usr/local/bin/:/usr/local/bin/
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://+:6501"
+      - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
+      - "RabbitMQ__Address=rabbitmq"
+    depends_on:
+      - mssql
+      - rabbitmq
+    ports:
+      - 6501:6501
