@@ -11,6 +11,7 @@
     <None Remove="Consumers\hjgdochd.mdv~" />
     <None Remove="AutoMapper" />
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Npgsql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Npgsql" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,31 +1,24 @@
-USE [master]
-GO
+CREATE USER admin WITH PASSWORD 'admin' CREATEDB;
+CREATE DATABASE fds
+    WITH 
+    OWNER = admin
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.utf8'
+    LC_CTYPE = 'en_US.utf8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
 
-IF DB_ID('FDS') IS NOT NULL
-  set noexec on               -- prevent creation when already exists
+\c fds
 
-/****** Object:  Database [FDS] ******/
-CREATE DATABASE [FDS];
-GO
-
-USE [FDS]
-GO
-
-/****** Object:  Table [dbo].[Package] ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Package](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](100) NOT NULL,
-  [CurrentVersion] [varchar](50) NOT NULL,
-  [LatestVersion] [varchar](50) NOT NULL,
-  [Score] [int] NULL,
-  [Url] [varchar](200) NOT NULL,
-  [Status] [int] DEFAULT(1) NOT NULL,
-  [Description] [varchar](1000) NULL,
-  [Type] [int] DEFAULT(1) NOT NULL,
-  [UpdatedOn] [datetime] NULL
- ) ON [PRIMARY]
-GO
+CREATE TABLE Package (
+	id integer not null generated always as identity,
+  name varchar (100) not null,
+  currentVersion varchar (50) not null,
+  latestVersion varchar (50) not null,
+  score integer null,
+  url varchar (200) not null,
+  status integer default(1) not null,
+  description varchar (1000) null,
+  type integer default(1) not null,
+  updatedOn timestamp null
+);
