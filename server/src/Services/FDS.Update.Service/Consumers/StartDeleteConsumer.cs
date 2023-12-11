@@ -22,7 +22,7 @@
             try
             {
                 var process = new Process();
-                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.WorkingDirectory = "../appdata/";
                 process.StartInfo.FileName = "/usr/local/bin/npm";
                 process.StartInfo.Arguments = "uninstall " + context.Message.PackageName;
                 process.StartInfo.UseShellExecute = true;

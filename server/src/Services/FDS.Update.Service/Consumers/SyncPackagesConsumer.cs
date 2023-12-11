@@ -32,7 +32,6 @@ namespace FDS.Update.Service.Consumers
         {
             try
             {
-                // using FileStream stream = File.OpenRead("../../../../package.json");
                 using FileStream stream = File.OpenRead("../appdata/package.json");
                 Models.PackageJson packageJson = await JsonSerializer.DeserializeAsync<Models.PackageJson>(stream);
                 HttpClientHandler clientHandler = new HttpClientHandler

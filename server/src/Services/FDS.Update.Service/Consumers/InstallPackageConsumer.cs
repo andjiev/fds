@@ -30,7 +30,7 @@ namespace FDS.Update.Service.Consumers
             try
             {
                 var process = new Process();
-                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.WorkingDirectory = "../appdata/";
                 process.StartInfo.FileName = "/usr/local/bin/npm";
                 process.StartInfo.Arguments = "install " + context.Message.Name + "@latest";
 
@@ -52,7 +52,7 @@ namespace FDS.Update.Service.Consumers
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occured while installing package");
+                throw new Exception("Error occured while installing package" + ex.Message);
             }
         }
 

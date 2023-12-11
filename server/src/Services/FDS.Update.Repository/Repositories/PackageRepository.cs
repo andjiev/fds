@@ -40,8 +40,8 @@
                     INSERT INTO Package
                     (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description, Type)
                     VALUES
-                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type);
-                    SELECT CAST(SCOPE_IDENTITY() as int)";
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type)
+                    RETURNING id";
 
             return await dbConnection.QuerySingleAsync<int>(sql, new
             {
