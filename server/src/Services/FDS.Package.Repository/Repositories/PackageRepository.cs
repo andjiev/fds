@@ -41,7 +41,7 @@
 
             if (ids != null && ids.Any())
             {
-                packageQuery += " WHERE Package.Id IN @Ids";
+                packageQuery += " WHERE Id = ANY(@Ids)";
             }
 
             var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery, new
@@ -67,7 +67,7 @@
                             Package.Status AS Status,
                             Package.Type AS Type
                         FROM Package
-                        WHERE Package.Id = @Id";
+                        WHERE Id = @Id";
 
             var package = await dbConnection.QueryFirstOrDefaultAsync<PackageDbResult>(query, new
             {
@@ -82,7 +82,7 @@
             string query = @"
                         UPDATE Package
                         SET Status = @Status
-                        WHERE Package.Id = @Id";
+                        WHERE Id = @Id";
 
             await dbConnection.ExecuteAsync(query, new
             {
