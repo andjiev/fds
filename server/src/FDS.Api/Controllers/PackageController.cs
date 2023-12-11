@@ -40,10 +40,10 @@
             return Ok(package);
         }
 
-        [HttpPut("sync")]
-        public async Task<ActionResult> SyncPackages()
+        [HttpPut("import")]
+        public async Task<ActionResult> ImportPackages()
         {
-            await mediator.Send(new SyncPackagesCommand());
+            await mediator.Send(new ImportPackagesCommand());
             return Ok();
         }
 

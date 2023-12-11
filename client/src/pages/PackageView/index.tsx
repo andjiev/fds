@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Switch, FormControlLabel, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onSyncPackages } from '../../store/package-store';
+import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onImportPackages } from '../../store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { translate } from '../../lib/translate';
@@ -44,8 +44,8 @@ const PackageView = () => {
     setAction('single');
   }
 
-  const onSync = () => {
-    dispatch(onSyncPackages());
+  const onImport = () => {
+    dispatch(onImportPackages());
   }
 
   const renderActionCell = (item: Models.Package.Model) => {
@@ -121,13 +121,13 @@ const PackageView = () => {
             </Button>
           </Box>
           <Box ml={2}>
-            <Button variant="contained" color="primary" onClick={onSync}>
-              Sync
+            <Button variant="contained" color="primary" onClick={onImport}>
+              Import
             </Button>
           </Box>
         </Grid>
       </Grid>
-      <Grid item mt={5}>
+      <Grid item pt={5} pb={5}>
         <TableContainer component={Paper}>
           <Table>
             <StyledTableHead>

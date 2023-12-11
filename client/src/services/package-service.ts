@@ -21,8 +21,8 @@ const deleteSelected = async (ids: number[]): Promise<AxiosResponse<Models.Packa
   return httpService.put<Models.Package.Model[]>(`/api/packages/deleteSelected`, ids);
 };
 
-const syncPackages = async (): Promise<AxiosResponse> => {
-  return httpService.put(`/api/packages/sync`);
+const importPackages = async (): Promise<AxiosResponse> => {
+  return httpService.put(`/api/packages/import`);
 };
 
-export { getPackages, createPackage, updatePackage, updateSelected, deleteSelected, syncPackages };
+export { getPackages, createPackage, updatePackage, updateSelected, deleteSelected, importPackages };

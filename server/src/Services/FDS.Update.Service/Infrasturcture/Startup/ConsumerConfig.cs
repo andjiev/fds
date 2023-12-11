@@ -14,7 +14,7 @@
         {
             services
                  .AddTransient<StartUpdateConsumer>()
-                 .AddTransient<SyncPackagesConsumer>()
+                 .AddTransient<ImportPackagesConsumer>()
                  .AddTransient<InstallPackageConsumer>()
                  .AddTransient<StartDeleteConsumer>();
 
@@ -51,9 +51,9 @@
                         e.PrefetchCount = 1;
                     });
 
-                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "SyncPackages"), e =>
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "ImportPackages"), e =>
                     {
-                        e.Consumer<SyncPackagesConsumer>(context);
+                        e.Consumer<ImportPackagesConsumer>(context);
                         e.PrefetchCount = 1;
                     });
 

@@ -17,18 +17,18 @@ namespace FDS.Update.Service.Consumers
     using System.Linq;
     using FDS.Common.DataContext.Enums;
 
-    public class SyncPackagesConsumer : IConsumer<ISyncPackages>
+    public class ImportPackagesConsumer : IConsumer<IImportPackages>
     {
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
 
-        public SyncPackagesConsumer(IPackageRepository repository, IMapper mapper)
+        public ImportPackagesConsumer(IPackageRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
-        public async Task Consume(ConsumeContext<ISyncPackages> context)
+        public async Task Consume(ConsumeContext<IImportPackages> context)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace FDS.Update.Service.Consumers
                 }
 
                 await repository.InsertPackagesAsync(mapper.Map<List<Entities.Package>>(packages));
-                await context.Publish<ISyncPackagesCompleted>(new
+                await context.Publish<IImportPackagesCompleted>(new
                 {
                     context.Message.CorrelationId
                 });

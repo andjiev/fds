@@ -10,31 +10,31 @@
     using FDS.Common.Extensions;
     using System;
 
-    public class SyncPackagesCommandHandler : IRequestHandler<SyncPackagesCommand, Unit>
+    public class ImportPackagesCommandHandler : IRequestHandler<ImportPackagesCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
 
-        public SyncPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration)
+        public ImportPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration)
         {
             this.bus = bus;
             this.configuration = configuration;
         }
 
-        public async Task<Unit> Handle(SyncPackagesCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ImportPackagesCommand request, CancellationToken cancellationToken)
         {
-            await SyncPackages(cancellationToken);
+            await ImportPackages(cancellationToken);
             return Unit.Task.Result;
         }
 
-        private async Task SyncPackages(CancellationToken cancellationToken)
+        private async Task ImportPackages(CancellationToken cancellationToken)
         {
             var correlation = Guid.NewGuid().ToString("N");
             var endpoint = await bus
-                .GetSendEndpoint(configuration.GetEndpointUrl(bus.Address, "SyncPackages"))
+                .GetSendEndpoint(configuration.GetEndpointUrl(bus.Address, "ImportPackages"))
                 .ConfigureAwait(false);
 
-            await endpoint.Send<ISyncPackages>(new
+            await endpoint.Send<IImportPackages>(new
             {
                 CorrelationId = correlation
             },
