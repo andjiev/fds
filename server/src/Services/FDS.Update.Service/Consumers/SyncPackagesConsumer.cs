@@ -35,7 +35,11 @@ namespace FDS.Update.Service.Consumers
                 // using FileStream stream = File.OpenRead("../../../../package.json");
                 using FileStream stream = File.OpenRead("../appdata/package.json");
                 Models.PackageJson packageJson = await JsonSerializer.DeserializeAsync<Models.PackageJson>(stream);
-                var httpClient = new HttpClient();
+                HttpClientHandler clientHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+                };
+                var httpClient = new HttpClient(clientHandler);
                 var packages = new List<Models.Package>();
 
                 // dependencies

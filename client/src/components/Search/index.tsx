@@ -7,9 +7,9 @@ import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import NpmImage from '../../assets/npm.png';
 import { PackageType } from '../PackageType';
-import { Type } from '@/lib/enums';
-import { useAppDispatch } from '@/hooks';
-import { onCreatePackage } from '@/store/package-store';
+import { Type } from '../../lib/enums';
+import { useAppDispatch } from '../../hooks';
+import { onCreatePackage } from '../../store/package-store';
 
 interface PackageResponse {
   name: string;

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Switch, FormControlLabel, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onSyncPackages } from '@/store/package-store';
+import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onSyncPackages } from '../../store/package-store';
 import { StyledTableHead } from './styles';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { translate } from '@/lib/translate';
-import { Status, Type } from '@/lib/enums';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { translate } from '../../lib/translate';
+import { Status, Type } from '../../lib/enums';
 import UpdateIcon from '@mui/icons-material/Update';
-import { setTitle } from '@/store/shared-store';
+import { setTitle } from '../../store/shared-store';
 import { ScoreBadge } from '../../components/ScoreBadge';
 import Search from '../../components/Search';
 import NpmImage from '../../assets/npm.png';

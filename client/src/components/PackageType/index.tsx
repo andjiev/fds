@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { CSSType } from "@/typings/styled";
-import { Type } from "@/lib/enums";
+import { CSSType } from "../../typings/styled";
+import { Type } from "../../lib/enums";
 
 export const PackageType = styled.a<{ type: Enums.Type }>`
   color: white;

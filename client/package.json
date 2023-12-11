@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite client",
+    "dev": "vite",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
     "build": "tsc && vite build",

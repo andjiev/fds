@@ -1,8 +1,8 @@
 import { lazy, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import withLazyLoad from '../lib/withLazyLoad';
-import { useAppDispatch } from '@/hooks';
-import { startSignalRConnection, stopSignalRConnection } from '@/store/shared-store';
+import { useAppDispatch } from '../hooks';
+import { startSignalRConnection, stopSignalRConnection } from '../store/shared-store';
 
 const PackageView = lazy(() => import('../pages/PackageView'));
 

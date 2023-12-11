@@ -58,7 +58,11 @@ namespace FDS.Update.Service.Consumers
 
         private async Task<Models.Package> CreatePackage(string packageName, string packageVersion, string description, PackageType type)
         {
-            var httpClient = new HttpClient();
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            var httpClient = new HttpClient(clientHandler);
             string snykUrl = "https://snyk.io/advisor/npm-package/" + packageName;
             string scoreUrl = snykUrl + "/badge.svg";
             HttpResponseMessage scoreResponse = await httpClient.GetAsync(scoreUrl);

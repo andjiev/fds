@@ -1,4 +1,4 @@
-import { CURRENT_ENVIRONMENT } from '@/consts';
+import { CURRENT_ENVIRONMENT } from '../consts';
 import i18next from 'i18next';
 import { Environment } from './enums';
 
