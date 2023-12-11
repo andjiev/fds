@@ -12,7 +12,7 @@
         {
             services
                 .AddTransient<PackageUpdatedConsumer>()
-                .AddTransient<SyncPackagesCompletedConsumer>()
+                .AddTransient<ImportPackagesCompletedConsumer>()
                 .AddTransient<PackageInstalledConsumer>()
                 .AddTransient<PackageDeletedConsumer>();
 
@@ -30,9 +30,9 @@
                         e.Consumer<PackageUpdatedConsumer>(context);
                     });
 
-                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "SyncPackagesCompleted"), e =>
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "ImportCompleted"), e =>
                     {
-                        e.Consumer<SyncPackagesCompletedConsumer>(context);
+                        e.Consumer<ImportPackagesCompletedConsumer>(context);
                     });
                     
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(configuration.GetValue<string>("RabbitMQ:Name"), "PackageInstalled"), e =>

@@ -23,7 +23,7 @@
                         SET 
                             Status = @Status,
                             CurrentVersion = @Version,
-                            UpdatedOn = getdate()
+                            UpdatedOn = now()
                         WHERE Package.Id = @PackageId";
 
             await dbConnection.ExecuteAsync(query, new
@@ -37,11 +37,11 @@
         public async Task<int> InsertPackageAsync(Entities.Package package)
         {
             var sql = @"
-                    INSERT INTO [Package]
+                    INSERT INTO Package
                     (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description, Type)
                     VALUES
-                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type);
-                    SELECT CAST(SCOPE_IDENTITY() as int)";
+                    (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type)
+                    RETURNING id";
 
             return await dbConnection.QuerySingleAsync<int>(sql, new
             {
@@ -61,7 +61,7 @@
             await dbConnection.ExecuteAsync("DELETE FROM Package");
 
             var sql = @"
-                    INSERT INTO [Package]
+                    INSERT INTO Package
                     (Name, CurrentVersion, LatestVersion, Status, Score, Url, Description, Type)
                     VALUES
                     (@Name, @CurrentVersion, @LatestVersion, @Status, @Score, @Url, @Description, @Type)";

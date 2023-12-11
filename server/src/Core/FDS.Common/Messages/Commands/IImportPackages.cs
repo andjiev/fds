@@ -2,7 +2,7 @@
 {
     using MassTransit;
 
-    public interface ISyncPackages : CorrelatedBy<string>
+    public interface IImportPackages : CorrelatedBy<string>
     {
     }
 }

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { bootstrapApp } from './store/shared-store';
 import Loading from './components/Loading';
 import { onGetPackages } from './store/package-store';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Menu = lazy(() => import('./components/Menu'));
 
@@ -25,13 +25,13 @@ const App = () => {
     <>
       {applicationBootstraped ? (
         <Suspense fallback={renderLoader()}>
-            <Box style={{ backgroundColor: 'rgb(237, 238, 240)' }}>
-              <Menu />
-              <Box m={3}>
-                <Router />
-                <ToastContainer position="top-right" />
-              </Box>
+          <Box style={{ backgroundColor: 'rgb(237, 238, 240)', minHeight: '100vh' }}>
+            <Menu />
+            <Box ml={3} mr={3}>
+              <Router />
+              <ToastContainer position="top-right" theme="colored" />
             </Box>
+          </Box>
         </Suspense>
       ) : (
         renderLoader()

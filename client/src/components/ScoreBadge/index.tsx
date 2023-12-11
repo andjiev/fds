@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CSSType } from "@/typings/styled";
+import { CSSType } from "../../typings/styled";
 
 export const ScoreBadge = styled.a<{ score?: number }>`
   color: white;

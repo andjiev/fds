@@ -5,8 +5,8 @@ import * as PackageStore from './package-store';
 import { getCultureFromStorage, setCultureToStorage } from './helpers/language-helper';
 import { initTranslations } from '../lib/translate';
 import { AppThunk } from '.';
-import { getTranslations } from '@/services/translation-service';
-import { FdsHubConnection } from '@/lib/signalr';
+import { getTranslations } from '../services/translation-service';
+import { FdsHubConnection } from '../lib/signalr';
 import { toast } from 'react-toastify';
 
 export interface SharedStore {
@@ -71,9 +71,9 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
       toast(`${result.name} updated`);
     });
 
-    connection.on('syncPackages', (result: Models.Package.Model[]) => {
+    connection.on('importCompleted', (result: Models.Package.Model[]) => {
       dispatch(PackageStore.setPackages(result));
-      toast('Packages synced');
+      toast('Packages imported');
     });
 
     connection.on('packageInstalled', (result: Models.Package.Model) => {

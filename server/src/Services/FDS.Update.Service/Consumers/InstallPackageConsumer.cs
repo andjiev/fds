@@ -30,7 +30,7 @@ namespace FDS.Update.Service.Consumers
             try
             {
                 var process = new Process();
-                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.WorkingDirectory = "../appdata/";
                 process.StartInfo.FileName = "/usr/local/bin/npm";
                 process.StartInfo.Arguments = "install " + context.Message.Name + "@latest";
 
@@ -52,13 +52,17 @@ namespace FDS.Update.Service.Consumers
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occured while installing package");
+                throw new Exception("Error occured while installing package" + ex.Message);
             }
         }
 
         private async Task<Models.Package> CreatePackage(string packageName, string packageVersion, string description, PackageType type)
         {
-            var httpClient = new HttpClient();
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+            var httpClient = new HttpClient(clientHandler);
             string snykUrl = "https://snyk.io/advisor/npm-package/" + packageName;
             string scoreUrl = snykUrl + "/badge.svg";
             HttpResponseMessage scoreResponse = await httpClient.GetAsync(scoreUrl);

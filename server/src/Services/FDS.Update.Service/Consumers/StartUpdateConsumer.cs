@@ -22,7 +22,7 @@
             try
             {
                 var process = new Process();
-                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.WorkingDirectory = "../appdata/";
                 process.StartInfo.FileName = "/usr/local/bin/npm";
                 process.StartInfo.Arguments = "install " + context.Message.PackageName + "@latest";
                 process.Start();
@@ -38,7 +38,7 @@
             catch (Exception ex)
             {
                 await repository.ResetStatusAsync(context.Message.PackageId);
-                throw new Exception("Error occured while updating package");
+                throw new Exception("Error occured while updating package" + ex.Message);
             }
         }
     }

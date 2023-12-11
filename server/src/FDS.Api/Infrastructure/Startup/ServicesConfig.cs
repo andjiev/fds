@@ -18,7 +18,7 @@
             services
                 .AddTransient<IRequestHandler<GetPackagesQuery, List<Models.Package>>, GetPackagesQueryHandler>()
                 .AddTransient<IRequestHandler<UpdatePackageCommand, Models.Package>, UpdatePackageCommandHandler>()
-                .AddTransient<IRequestHandler<SyncPackagesCommand, Unit>, SyncPackagesCommandHandler>()
+                .AddTransient<IRequestHandler<ImportPackagesCommand, Unit>, ImportPackagesCommandHandler>()
                 .AddTransient<IRequestHandler<CreatePackageCommand, Unit>, CreatePackageCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateSelectedPackagesCommand, List<Models.Package>>, UpdateSelectedPackagesCommandHandler>()
                 .AddTransient<IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>, DeleteSelectedPackagesCommandHandler>();

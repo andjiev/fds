@@ -14,7 +14,7 @@
         {
             services
                  .AddTransient<StartUpdateConsumer>()
-                 .AddTransient<SyncPackagesConsumer>()
+                 .AddTransient<ImportPackagesConsumer>()
                  .AddTransient<InstallPackageConsumer>()
                  .AddTransient<StartDeleteConsumer>();
 
@@ -24,26 +24,26 @@
                 {
                     var config = context.GetService<IRabbitMQConfiguration>();
 
-                    if (environment.IsDevelopment())
+                    // if (environment.IsDevelopment())
+                    // {
+                    cfg.Host(config.RabbitMQAddress, 5672, config.RabbitMQVHost, h =>
                     {
-                        cfg.Host(config.RabbitMQAddress, 5672, config.RabbitMQVHost, h =>
-                        {
-                            h.Password(config.RabbitMQPassword);
-                        });
-                    }
-                    else
-                    {
-                        cfg.Host(config.RabbitMQAddress, 5671, config.RabbitMQVHost, h =>
-                        {
-                            h.Username(config.RabbitMQVHost);
-                            h.Password(config.RabbitMQPassword);
+                        h.Password(config.RabbitMQPassword);
+                    });
+                    // }
+                    // else
+                    // {
+                    //     cfg.Host(config.RabbitMQAddress, 5671, config.RabbitMQVHost, h =>
+                    //     {
+                    //         h.Username(config.RabbitMQVHost);
+                    //         h.Password(config.RabbitMQPassword);
 
-                            h.UseSsl(s =>
-                            {
-                                s.Protocol = SslProtocols.Tls12;
-                            });
-                        });
-                    }
+                    //         h.UseSsl(s =>
+                    //         {
+                    //             s.Protocol = SslProtocols.Tls12;
+                    //         });
+                    //     });
+                    // }
 
                     cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "StartUpdate"), e =>
                     {
@@ -51,9 +51,9 @@
                         e.PrefetchCount = 1;
                     });
 
-                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "SyncPackages"), e =>
+                    cfg.ReceiveEndpoint(UrlBuilder.GetRoute(config.RabbitMQName, "ImportPackages"), e =>
                     {
-                        e.Consumer<SyncPackagesConsumer>(context);
+                        e.Consumer<ImportPackagesConsumer>(context);
                         e.PrefetchCount = 1;
                     });
 

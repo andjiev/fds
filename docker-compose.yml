@@ -1,26 +1,31 @@
 version: "3.4"
 
 services:
-  mssql:
-    build: ./db
-    container_name: fds-azuresql
-    environment:
-      MSSQL_SA_PASSWORD: "MssqlPass123"
-      ACCEPT_EULA: "Y"
-      MSSQL_AGENT_ENABLED: "true"
-    ports:
-      - "1433:1433"
 
-  # client:
-  #   container_name: fds-client
-  #   build: ./client
-  #   environment:
-  #     - "FDS_API_URL=http://localhost:6401"
-  #   ports:
-  #     - "3001:3000"
+  postgres:
+    image: postgres
+    restart: always
+    environment: 
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - ./db/db-init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+
+  client:
+    container_name: ui
+    build: ./client
+    depends_on:
+      - api
+      - worker
+    ports:
+      - "3000:3000"
 
   rabbitmq:
-    container_name: fds-rabbitmq
+    container_name: rabbitmq
     hostname: rabbitmq
     image: rabbitmq:3-management
     environment:
@@ -31,34 +36,36 @@ services:
       - "15672:15672"
       - "25672:25672"
 
-  # api:
-  #   container_name: fds-api
-  #   build:
-  #     context: .
-  #     dockerfile: src/FDS.Api/Dockerfile
-  #   environment:
-  #     - "ASPNETCORE_ENVIRONMENT=Development"
-  #     - "ASPNETCORE_URLS=http://+:6401"
-  #     - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
-  #     - "RabbitMQ__Address=rabbitmq"
-  #   depends_on:
-  #     - mssql
-  #     - rabbitmq
-  #   ports:
-  #     - 6401:80
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./server/src/FDS.Api/Dockerfile
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://+:6401"
+      - "ConnectionStrings__DefaultConnection=User ID=root;Password=root;Host=postgres;Port=5432;Database=fds;Pooling=true;"
+      - "RabbitMQ__Address=rabbitmq"
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - 6401:6401
 
-  # update:
-  #   container_name: fds-update
-  #   build:
-  #     context: .
-  #     dockerfile: ./src/Services/FDS.Update.Service/Dockerfile
-  #   environment:
-  #     - "ASPNETCORE_ENVIRONMENT=Development"
-  #     - "ASPNETCORE_URLS=http://+:6501"
-  #     - "ConnectionStrings__DefaultConnection=user id=sa;password=MssqlPass123;data source=mssql;initial catalog=FDS;Connect Timeout=30;Pooling=true;"
-  #     - "RabbitMQ__Address=rabbitmq"
-  #   depends_on:
-  #     - mssql
-  #     - rabbitmq
-  #   ports:
-  #     - 6501:80
+  worker:
+    container_name: worker
+    build:
+      context: .
+      dockerfile: ./server/src/Services/FDS.Update.Service/Dockerfile
+    volumes:
+      - ./client/package.json:/appdata/package.json
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://+:6501"
+      - "ConnectionStrings__DefaultConnection=User ID=root;Password=root;Host=postgres;Port=5432;Database=fds;Pooling=true;"
+      - "RabbitMQ__Address=rabbitmq"
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - 6501:6501

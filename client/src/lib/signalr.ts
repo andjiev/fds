@@ -8,7 +8,7 @@ class FdsHubConnection {
   public static getInstance(endpoint: string): HubConnection {
     if (!FdsHubConnection.instance) {
       FdsHubConnection.instance = new HubConnectionBuilder()
-        .withUrl(`https://localhost:5001/${endpoint}`)
+        .withUrl(`http://localhost:6401/${endpoint}`)
         .withAutomaticReconnect()
         .build();
     }

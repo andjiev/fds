@@ -22,9 +22,10 @@
             try
             {
                 var process = new Process();
-                process.StartInfo.WorkingDirectory = "../../../../";
+                process.StartInfo.WorkingDirectory = "../appdata/";
                 process.StartInfo.FileName = "/usr/local/bin/npm";
                 process.StartInfo.Arguments = "uninstall " + context.Message.PackageName;
+                process.StartInfo.UseShellExecute = true;
                 process.Start();
                 await process.WaitForExitAsync();
 
@@ -38,7 +39,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Error occured while deleting package");
+                throw new Exception("Error occured while deleting package" + ex.Message);
             }
         }
     }

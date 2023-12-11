@@ -97,9 +97,10 @@ export const onDeleteSelectedPackages = (ids: number[]): AppThunk => async (disp
   }
 };
 
-export const onSyncPackages = (): AppThunk => async (dispatch, store) => {
+export const onImportPackages = (): AppThunk => async (dispatch, store) => {
   try {
-    await PackageService.syncPackages();
+    await PackageService.importPackages();
+    toast('Import started');
   } catch (err) {
     console.log(err);
   }

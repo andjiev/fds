@@ -26,7 +26,7 @@ const Menu = () => {
             <Grid container item xs={4} justifyContent="flex-end">
               <Grid item xs={12} md={2}>
                 <FormControl fullWidth>
-                  <Select
+                  {/* <Select
                     value={language}
                     onChange={(event: any) => onLanguageChange(event.target.value as string)}
                     style={{ height: 45 }}
@@ -34,7 +34,7 @@ const Menu = () => {
                     {languages.map(lang => {
                       return <MenuItem key={lang} value={lang}>{lang}</MenuItem>;
                     })}
-                  </Select>
+                  </Select> */}
                 </FormControl>
               </Grid>
             </Grid>

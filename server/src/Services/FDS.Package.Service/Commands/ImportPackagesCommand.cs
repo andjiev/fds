@@ -2,7 +2,7 @@
 {
     using MediatR;
 
-    public class SyncPackagesCommand : IRequest<Unit>
+    public class ImportPackagesCommand : IRequest<Unit>
     {
     }
 }
