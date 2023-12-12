@@ -2,21 +2,27 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import * as UiStore from './ui-store';
 import * as PackageStore from './package-store';
+import * as SettingsService from '../services/settings-service';
 import { getCultureFromStorage, setCultureToStorage } from './helpers/language-helper';
 import { initTranslations } from '../lib/translate';
 import { AppThunk } from '.';
 import { getTranslations } from '../services/translation-service';
 import { FdsHubConnection } from '../lib/signalr';
 import { toast } from 'react-toastify';
+import { ImportState } from '../lib/enums';
 
 export interface SharedStore {
   title: string;
   culture: string;
+  settings: Models.Settings.Model;
 }
 
 const initialState: SharedStore = {
   title: '',
   culture: '',
+  settings: {
+    state: ImportState.Initial
+  }
 };
 
 const slice = createSlice({
@@ -28,11 +34,14 @@ const slice = createSlice({
     },
     setCulture: (store: SharedStore, action: PayloadAction<string>) => {
       store.culture = action.payload;
+    },
+    setSettings: (store: SharedStore, action: PayloadAction<Models.Settings.Model>) => {
+      store.settings = action.payload;
     }
   }
 });
 
-export const { setTitle, setCulture } = slice.actions;
+export const { setTitle, setCulture, setSettings } = slice.actions;
 
 export const reducer = slice.reducer;
 
@@ -50,6 +59,18 @@ export const bootstrapApp = (): AppThunk => async (dispatch, store) => {
     dispatch(UiStore.hideInitialLoader());
   } catch (err) {
     dispatch(UiStore.hideInitialLoader());
+  }
+};
+
+// thunk actions
+export const onGetSettings = (): AppThunk => async (dispatch, store) => {
+  try {
+    const result = await SettingsService.getSettings();
+    if (result.data) {
+      dispatch(setSettings(result.data));
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -73,6 +94,7 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
 
     connection.on('importCompleted', (result: Models.Package.Model[]) => {
       dispatch(PackageStore.setPackages(result));
+      dispatch(setSettings({ ...store().shared.settings, state: ImportState.Initial }));
       toast('Packages imported');
     });
 

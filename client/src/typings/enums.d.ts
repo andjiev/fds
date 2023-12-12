@@ -9,4 +9,9 @@ declare module Enums {
     Prod = 1,
     Dev = 2
   }
+
+  export enum ImportState {
+    Initial = 1,
+    Importing = 2
+  }
 }

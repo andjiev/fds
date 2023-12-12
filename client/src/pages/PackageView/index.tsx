@@ -5,7 +5,7 @@ import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, on
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { translate } from '../../lib/translate';
-import { Status, Type } from '../../lib/enums';
+import { ImportState, Status, Type } from '../../lib/enums';
 import UpdateIcon from '@mui/icons-material/Update';
 import { setTitle } from '../../store/shared-store';
 import { ScoreBadge } from '../../components/ScoreBadge';
@@ -21,6 +21,7 @@ type ActionType = 'single' | 'multi-update' | 'multi-delete';
 const PackageView = () => {
   const dispatch = useAppDispatch();
   const packages = useAppSelector(state => state.packageList.packages);
+  const importState = useAppSelector(state => state.shared.settings.state);
   const [action, setAction] = useState<ActionType>('single');
   const [selected, setSelected] = useState<number[]>([]);
 
@@ -121,7 +122,7 @@ const PackageView = () => {
             </Button>
           </Box>
           <Box ml={2}>
-            <Button variant="contained" color="primary" onClick={onImport}>
+            <Button variant="contained" color="primary" onClick={onImport} disabled={importState === ImportState.Importing}>
               Import
             </Button>
           </Box>

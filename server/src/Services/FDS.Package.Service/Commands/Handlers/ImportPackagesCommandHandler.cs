@@ -9,20 +9,25 @@
     using System.Threading.Tasks;
     using FDS.Common.Extensions;
     using System;
+    using FDS.Package.Domain.Repositories;
+    using Enums = FDS.Common.DataContext.Enums;
 
     public class ImportPackagesCommandHandler : IRequestHandler<ImportPackagesCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
+        private readonly ISettingsRepository repository;
 
-        public ImportPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration)
+        public ImportPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, ISettingsRepository repository)
         {
             this.bus = bus;
             this.configuration = configuration;
+            this.repository = repository;
         }
 
         public async Task<Unit> Handle(ImportPackagesCommand request, CancellationToken cancellationToken)
         {
+            await repository.UpdateImportState(Enums.ImportState.Importing);
             await ImportPackages(cancellationToken);
             return Unit.Task.Result;
         }

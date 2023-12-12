@@ -3,7 +3,7 @@ import { Suspense, lazy, useEffect } from 'react';
 import Router from './router';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { bootstrapApp } from './store/shared-store';
+import { bootstrapApp, onGetSettings } from './store/shared-store';
 import Loading from './components/Loading';
 import { onGetPackages } from './store/package-store';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,6 +17,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(bootstrapApp());
+    dispatch(onGetSettings());
     dispatch(onGetPackages());
   }, []);
 
@@ -26,13 +27,13 @@ const App = () => {
     <>
       {applicationBootstraped ? (
         // <Suspense fallback={renderLoader()}>
-          <Box style={{ backgroundColor: 'rgb(237, 238, 240)', minHeight: '100vh' }}>
-            <Menu />
-            <Box ml={3} mr={3}>
-              <Router />
-              <ToastContainer position="top-right" theme="colored" />
-            </Box>
+        <Box style={{ backgroundColor: 'rgb(237, 238, 240)', minHeight: '100vh' }}>
+          <Menu />
+          <Box ml={3} mr={3}>
+            <Router />
+            <ToastContainer position="top-right" theme="colored" />
           </Box>
+        </Box>
         // </Suspense>
       ) : (
         renderLoader()

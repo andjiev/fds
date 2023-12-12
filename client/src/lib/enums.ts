@@ -14,4 +14,9 @@ enum Type {
   Dev = 2
 }
 
-export { Environment, Status, Type };
+enum ImportState {
+  Initial = 1,
+  Importing = 2
+}
+
+export { Environment, Status, Type, ImportState };

@@ -22,3 +22,10 @@ CREATE TABLE Package (
   type integer default(1) not null,
   updatedOn timestamp null
 );
+
+CREATE TABLE Settings (
+  id integer not null generated always as identity,
+  state integer default(1) not null
+);
+
+INSERT INTO Settings (state) VALUES (1);

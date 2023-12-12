@@ -14,12 +14,14 @@
     public class ImportPackagesCompletedConsumer : IConsumer<IImportPackagesCompleted>
     {
         private readonly IPackageRepository repository;
+        private readonly ISettingsRepository settingsRepository;
         private readonly IHubContext<PackageHub> hub;
         private readonly IMapper mapper;
 
-        public ImportPackagesCompletedConsumer(IPackageRepository repository, IHubContext<PackageHub> hub, IMapper mapper)
+        public ImportPackagesCompletedConsumer(IPackageRepository repository, ISettingsRepository settingsRepository, IHubContext<PackageHub> hub, IMapper mapper)
         {
             this.repository = repository;
+            this.settingsRepository = settingsRepository;
             this.hub = hub;
             this.mapper = mapper;
         }
@@ -29,6 +31,7 @@
             try
             {
                 var packages = await repository.GetAsync();
+                await settingsRepository.UpdateImportState(Common.DataContext.Enums.ImportState.Initial);
                 await hub.Clients.All.SendAsync("importCompleted", mapper.Map<List<Models.Package>>(packages));
             }
             catch (Exception ex)

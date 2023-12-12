@@ -21,7 +21,8 @@
                 .AddTransient<IRequestHandler<ImportPackagesCommand, Unit>, ImportPackagesCommandHandler>()
                 .AddTransient<IRequestHandler<CreatePackageCommand, Unit>, CreatePackageCommandHandler>()
                 .AddTransient<IRequestHandler<UpdateSelectedPackagesCommand, List<Models.Package>>, UpdateSelectedPackagesCommandHandler>()
-                .AddTransient<IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>, DeleteSelectedPackagesCommandHandler>();
+                .AddTransient<IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>, DeleteSelectedPackagesCommandHandler>()
+                .AddTransient<IRequestHandler<GetSettingsQuery, Models.Settings>, GetSettingsQueryHandler>();
 
             services.AddSingleton<IHostedService, BusService>();
 
