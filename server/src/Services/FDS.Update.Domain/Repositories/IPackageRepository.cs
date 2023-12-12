@@ -15,6 +15,5 @@
         Task DeletePackageAsync(int id);
 
         Task ResetStatusAsync(int packageId);
-
     }
 }

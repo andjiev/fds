@@ -58,7 +58,7 @@ services:
       context: .
       dockerfile: ./server/src/Services/FDS.Update.Service/Dockerfile
     volumes:
-      - ./client/package.json:/appdata/package.json
+      - ./client/package.json:/appdata/package.json # change this for your needs 
     environment:
       - "ASPNETCORE_ENVIRONMENT=Development"
       - "ASPNETCORE_URLS=http://+:6501"

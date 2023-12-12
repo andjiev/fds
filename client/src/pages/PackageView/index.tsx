@@ -50,7 +50,7 @@ const PackageView = () => {
 
   const renderActionCell = (item: Models.Package.Model) => {
     if (action === 'multi-delete') {
-      return <Checkbox size="small" onChange={(checked) => {
+      return <Checkbox size="small" checked={selected.includes(item.id)} onChange={(e, checked) => {
         if (checked) {
           setSelected([...selected, item.id]);
         } else {
@@ -60,7 +60,7 @@ const PackageView = () => {
     }
 
     if (action === 'multi-update' && item.status === Status.UpdateNeeded) {
-      return <Checkbox size="small" onChange={(checked) => {
+      return <Checkbox size="small" checked={selected.includes(item.id)} onChange={(e, checked) => {
         if (checked) {
           setSelected([...selected, item.id]);
         } else {
