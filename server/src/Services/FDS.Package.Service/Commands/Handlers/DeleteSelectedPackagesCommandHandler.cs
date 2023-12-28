@@ -6,30 +6,35 @@
     using FDS.Common.Messages;
     using FDS.Common.Messages.Commands;
     using FDS.Package.Domain.Repositories;
+    using FDS.Package.Service.Hubs;
     using MassTransit;
     using MediatR;
+    using Microsoft.AspNetCore.SignalR;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Models = FDS.Common.Models;
 
-    public class DeleteSelectedPackagesCommandHandler : IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>
+    public class DeleteSelectedPackagesCommandHandler : IRequestHandler<DeleteSelectedPackagesCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly IPackageRepository repository;
         private readonly IMapper mapper;
+        private readonly IHubContext<PackageHub> hub;
 
-        public DeleteSelectedPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
+        public DeleteSelectedPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper, IHubContext<PackageHub> hub)
         {
             this.bus = bus;
             this.configuration = configuration;
             this.repository = repository;
             this.mapper = mapper;
+            this.hub = hub;
         }
 
-        public async Task<List<Models.Package>> Handle(DeleteSelectedPackagesCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteSelectedPackagesCommand request, CancellationToken cancellationToken)
         {
             var packages = await repository.GetAsync(request.PackageIds);
             var packagesToReturn = new List<Models.Package>();
@@ -42,7 +47,8 @@
                 packagesToReturn.Add(mapper.Map<Models.Package>(package));
             }
 
-            return packagesToReturn;
+            await hub.Clients.All.SendAsync("packagesModified", packagesToReturn.Select(x => x.Id));
+            return Unit.Task.Result;
         }
 
         private async Task StartPackageDelete(int packageId, string packageName, CancellationToken cancellationToken)

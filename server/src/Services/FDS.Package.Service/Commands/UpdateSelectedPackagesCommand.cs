@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Models = FDS.Common.Models;
 
-    public class UpdateSelectedPackagesCommand : IRequest<List<Models.Package>>
+    public class UpdateSelectedPackagesCommand : IRequest<Unit>
     {
         public UpdateSelectedPackagesCommand(List<int> packageIds)
         {

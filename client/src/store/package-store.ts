@@ -21,21 +21,18 @@ const slice = createSlice({
     setPackages: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model[]>) => {
       state.packages = action.payload;
     },
-    setPackage: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model>) => {
-      state.packages = state.packages.map(x => (x.id === action.payload.id ? action.payload : x));
-    },
     setModifiedPackages: (state: PackageUpdateStore, action: PayloadAction<Models.Package.Model[]>) => {
       state.packages = state.packages.map(x => action.payload.find(a => x.id === a.id) || x);
     }
   }
 });
 
-export const { setPackages, setPackage, setModifiedPackages } = slice.actions;
+export const { setPackages, setModifiedPackages } = slice.actions;
 
 export const reducer = slice.reducer;
 
 // thunk actions
-export const onGetPackages = (): AppThunk => async (dispatch, store) => {
+export const onGetPackages = (): AppThunk => async (dispatch) => {
   try {
     const result = await PackageService.getPackages();
     if (result.data) {
@@ -66,34 +63,25 @@ export const onCreatePackage = (name: string, description: string, version: stri
   }
 };
 
-export const onUpdatePackage = (packageId: number): AppThunk => async (dispatch, store) => {
+export const onUpdatePackage = (packageId: number): AppThunk => async () => {
   try {
-    const result = await PackageService.updatePackage(packageId);
-    if (result.data) {
-      dispatch(setPackage(result.data));
-    }
+    await PackageService.updatePackage(packageId);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const onUpdateSelectedPackages = (ids: number[]): AppThunk => async (dispatch, store) => {
+export const onUpdateSelectedPackages = (ids: number[]): AppThunk => async () => {
   try {
-    const result = await PackageService.updateSelected(ids);
-    if (result.data) {
-      dispatch(setModifiedPackages(result.data));
-    }
+    await PackageService.updateSelected(ids);
   } catch (err) {
     console.log(err);
   }
 };
 
-export const onDeleteSelectedPackages = (ids: number[]): AppThunk => async (dispatch, store) => {
+export const onDeleteSelectedPackages = (ids: number[]): AppThunk => async () => {
   try {
-    const result = await PackageService.deleteSelected(ids);
-    if (result.data) {
-      dispatch(setModifiedPackages(result.data));
-    }
+    await PackageService.deleteSelected(ids);
   } catch (err) {
     console.log(err);
   }

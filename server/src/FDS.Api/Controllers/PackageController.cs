@@ -36,8 +36,8 @@
         [HttpPut("{packageId:int}")]
         public async Task<ActionResult<Models.Package>> UpdatePackageVersion(int packageId)
         {
-            var package = await mediator.Send(new UpdatePackageCommand(packageId));
-            return Ok(package);
+            await mediator.Send(new UpdatePackageCommand(packageId));
+            return Ok();
         }
 
         [HttpPut("import")]
@@ -50,15 +50,15 @@
         [HttpPut("updateSelected")]
         public async Task<ActionResult<List<Models.Package>>> UpdateSelectedPackages(List<int> packageIds)
         {
-            var packages = await mediator.Send(new UpdateSelectedPackagesCommand(packageIds));
-            return Ok(packages);
+            await mediator.Send(new UpdateSelectedPackagesCommand(packageIds));
+            return Ok();
         }
 
         [HttpPut("deleteSelected")]
         public async Task<ActionResult<List<Models.Package>>> DeleteSelectedPackages(List<int> packageIds)
         {
-            var packages = await mediator.Send(new DeleteSelectedPackagesCommand(packageIds));
-            return Ok(packages);
+            await mediator.Send(new DeleteSelectedPackagesCommand(packageIds));
+            return Ok();
         }
     }
 }

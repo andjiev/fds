@@ -17,11 +17,11 @@
         {
             services
                 .AddTransient<IRequestHandler<GetPackagesQuery, List<Models.Package>>, GetPackagesQueryHandler>()
-                .AddTransient<IRequestHandler<UpdatePackageCommand, Models.Package>, UpdatePackageCommandHandler>()
+                .AddTransient<IRequestHandler<UpdatePackageCommand, Unit>, UpdatePackageCommandHandler>()
                 .AddTransient<IRequestHandler<ImportPackagesCommand, Unit>, ImportPackagesCommandHandler>()
                 .AddTransient<IRequestHandler<CreatePackageCommand, Unit>, CreatePackageCommandHandler>()
-                .AddTransient<IRequestHandler<UpdateSelectedPackagesCommand, List<Models.Package>>, UpdateSelectedPackagesCommandHandler>()
-                .AddTransient<IRequestHandler<DeleteSelectedPackagesCommand, List<Models.Package>>, DeleteSelectedPackagesCommandHandler>()
+                .AddTransient<IRequestHandler<UpdateSelectedPackagesCommand, Unit>, UpdateSelectedPackagesCommandHandler>()
+                .AddTransient<IRequestHandler<DeleteSelectedPackagesCommand, Unit>, DeleteSelectedPackagesCommandHandler>()
                 .AddTransient<IRequestHandler<GetSettingsQuery, Models.Settings>, GetSettingsQueryHandler>();
 
             services.AddSingleton<IHostedService, BusService>();

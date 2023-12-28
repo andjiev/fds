@@ -9,7 +9,7 @@ import { AppThunk } from '.';
 import { getTranslations } from '../services/translation-service';
 import { FdsHubConnection } from '../lib/signalr';
 import { toast } from 'react-toastify';
-import { ImportState } from '../lib/enums';
+import { ImportState, Status } from '../lib/enums';
 
 export interface SharedStore {
   title: string;
@@ -46,7 +46,7 @@ export const { setTitle, setCulture, setSettings } = slice.actions;
 export const reducer = slice.reducer;
 
 //thunk
-export const bootstrapApp = (): AppThunk => async (dispatch, store) => {
+export const bootstrapApp = (): AppThunk => async (dispatch) => {
   try {
     dispatch(UiStore.showInitialLoader());
     const translations = await getTranslations();
@@ -63,7 +63,7 @@ export const bootstrapApp = (): AppThunk => async (dispatch, store) => {
 };
 
 // thunk actions
-export const onGetSettings = (): AppThunk => async (dispatch, store) => {
+export const onGetSettings = (): AppThunk => async (dispatch) => {
   try {
     const result = await SettingsService.getSettings();
     if (result.data) {
@@ -74,7 +74,7 @@ export const onGetSettings = (): AppThunk => async (dispatch, store) => {
   }
 };
 
-export const changeCulture = (culture: string): AppThunk => async (dispatch, store) => {
+export const changeCulture = (culture: string): AppThunk => async () => {
   setCultureToStorage(culture);
 
   // refresh
@@ -109,12 +109,19 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
       dispatch(PackageStore.setPackages(packages.filter(x => x.id !== id)));
       toast(`${name} deleted`);
     });
+
+    connection.on('packagesModified', (ids: number[]) => {
+      const packages = store().packageList.packages;
+      const setModifiedPackages = packages.filter(x => ids.find(a => a === x.id)).map(x => ({ ...x, status: Status.Loading }));
+      dispatch(PackageStore.setModifiedPackages(setModifiedPackages));
+    });
+
   } catch (err) {
     console.log(err);
   }
 };
 
-export const stopSignalRConnection = (): AppThunk => async (dispatch, store) => {
+export const stopSignalRConnection = (): AppThunk => async () => {
   const connection = FdsHubConnection.getInstance('hubs/package')
   try {
     await connection.stop();

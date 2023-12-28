@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Models = FDS.Common.Models;
 
-    public class DeleteSelectedPackagesCommand : IRequest<List<Models.Package>>
+    public class DeleteSelectedPackagesCommand : IRequest<Unit>
     {
         public DeleteSelectedPackagesCommand(List<int> packageIds)
         {

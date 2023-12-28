@@ -6,29 +6,31 @@
     using FDS.Common.Messages;
     using FDS.Common.Messages.Commands;
     using FDS.Package.Domain.Repositories;
+    using FDS.Package.Service.Hubs;
     using MassTransit;
     using MediatR;
+    using Microsoft.AspNetCore.SignalR;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Models = FDS.Common.Models;
 
-    public class UpdatePackageCommandHandler : IRequestHandler<UpdatePackageCommand, Models.Package>
+    public class UpdatePackageCommandHandler : IRequestHandler<UpdatePackageCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly IPackageRepository repository;
-        private readonly IMapper mapper;
+        private readonly IHubContext<PackageHub> hub;
 
-        public UpdatePackageCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IMapper mapper)
+        public UpdatePackageCommandHandler(IBus bus, IRabbitMQConfiguration configuration, IPackageRepository repository, IHubContext<PackageHub> hub)
         {
             this.bus = bus;
             this.configuration = configuration;
             this.repository = repository;
-            this.mapper = mapper;
+            this.hub = hub;
         }
 
-        public async Task<Models.Package> Handle(UpdatePackageCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdatePackageCommand request, CancellationToken cancellationToken)
         {
             var package = await repository.GetPackageAsync(request.PackageId);
             if (package == null)
@@ -40,7 +42,9 @@
 
             await repository.UpdatePackageAsync(package);
             await StartPackageUpdate(package.Id, package.Name, package.LatestVersion, cancellationToken);
-            return mapper.Map<Models.Package>(package);
+
+            await hub.Clients.All.SendAsync("packagesModified", new int[] { package.Id });
+            return Unit.Task.Result;
         }
 
         private async Task StartPackageUpdate(int packageId, string packageName, string packageVersion, CancellationToken cancellationToken)

@@ -44,6 +44,8 @@
                 packageQuery += " WHERE Id = ANY(@Ids)";
             }
 
+            packageQuery = packageQuery + " ORDER BY Package.Id ASC";
+
             var result = (await dbConnection.QueryAsync<PackageDbResult>(packageQuery, new
             {
                 Ids = ids
