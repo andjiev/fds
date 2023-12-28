@@ -92,6 +92,11 @@ export const startSignalRConnection = (): AppThunk => async (dispatch, store) =>
       toast(`${result.name} updated`);
     });
 
+    connection.on('importStarted', () => {
+      dispatch(setSettings({ ...store().shared.settings, state: ImportState.Importing }));
+      toast('Import started');
+    });
+
     connection.on('importCompleted', (result: Models.Package.Model[]) => {
       dispatch(PackageStore.setPackages(result));
       dispatch(setSettings({ ...store().shared.settings, state: ImportState.Initial }));

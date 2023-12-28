@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import * as PackageService from '../services/package-service';
-import * as SharedStore from './shared-store';
 import { AppThunk } from '.';
 import { toast } from 'react-toastify';
-import { ImportState } from '../lib/enums';
 
 export interface PackageUpdateStore {
   packages: Models.Package.Model[];
@@ -87,11 +85,9 @@ export const onDeleteSelectedPackages = (ids: number[]): AppThunk => async () =>
   }
 };
 
-export const onImportPackages = (): AppThunk => async (dispatch, store) => {
+export const onImportPackages = (): AppThunk => async () => {
   try {
     await PackageService.importPackages();
-    dispatch(SharedStore.setSettings({ ...store().shared.settings, state: ImportState.Importing }));
-    toast('Import started');
   } catch (err) {
     console.log(err);
   }

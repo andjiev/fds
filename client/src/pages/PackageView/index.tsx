@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Switch, FormControlLabel, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Grid, Box, TableContainer, Table, Paper, TableRow, TableCell, TableBody, IconButton, CircularProgress, Button, Checkbox, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { onUpdateSelectedPackages, onDeleteSelectedPackages, onUpdatePackage, onImportPackages } from '../../store/package-store';
 import { StyledTableHead } from './styles';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -27,7 +26,7 @@ const PackageView = () => {
 
   useEffect(() => {
     dispatch(setTitle(translate('Page_Title_Packages', 'Packages')));
-  }, []);
+  }, [dispatch]);
 
   const onUpdate = (packageId: number) => {
     dispatch(onUpdatePackage(packageId));
@@ -144,7 +143,7 @@ const PackageView = () => {
               </TableRow>
             </StyledTableHead>
             <TableBody>
-              {packages.map(item => {
+              {importState === ImportState.Initial && packages.map(item => {
                 return (
                   <TableRow key={item.id} style={{ height: 70 }}>
                     <TableCell>

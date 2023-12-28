@@ -11,24 +11,30 @@
     using System;
     using FDS.Package.Domain.Repositories;
     using Enums = FDS.Common.DataContext.Enums;
+    using FDS.Package.Service.Hubs;
+    using Microsoft.AspNetCore.SignalR;
 
     public class ImportPackagesCommandHandler : IRequestHandler<ImportPackagesCommand, Unit>
     {
         private readonly IBus bus;
         private readonly IRabbitMQConfiguration configuration;
         private readonly ISettingsRepository repository;
+        private readonly IHubContext<PackageHub> hub;
 
-        public ImportPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, ISettingsRepository repository)
+
+        public ImportPackagesCommandHandler(IBus bus, IRabbitMQConfiguration configuration, ISettingsRepository repository, IHubContext<PackageHub> hub)
         {
             this.bus = bus;
             this.configuration = configuration;
             this.repository = repository;
+            this.hub = hub;
         }
 
         public async Task<Unit> Handle(ImportPackagesCommand request, CancellationToken cancellationToken)
         {
             await repository.UpdateImportState(Enums.ImportState.Importing);
             await ImportPackages(cancellationToken);
+            await hub.Clients.All.SendAsync("importStarted");
             return Unit.Task.Result;
         }
 
